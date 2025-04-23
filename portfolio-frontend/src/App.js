@@ -1,16 +1,23 @@
-import { useEffect } from 'react';
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+// Tus componentes
+function Home() {
+  return <h2>Home</h2>;
+}
+
+function About() {
+  return <h2>About</h2>;
+}
 
 function App() {
-  useEffect(() => {
-    fetch('/api/auth/getAllUsers')
-      .then(response => response.json())
-      .then(data => console.log(data));
-  }, []);
-
   return (
-    <div>
-      <h1>Frontend React funcionando!</h1>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

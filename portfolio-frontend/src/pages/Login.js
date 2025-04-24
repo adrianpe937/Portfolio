@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 import '../css/Login.css'; // Importamos el CSS
 
-function Login() {
+function Login({ setUsername }) {
   const [form, setForm] = useState({ email: '', password: '' });
   const [mensaje, setMensaje] = useState('');
   const navigate = useNavigate();
@@ -24,6 +25,9 @@ function Login() {
 
       if (res.ok) {
         localStorage.setItem('token', data.token);
+        // Extrae el username y actualiza el estado en App.js
+        const decoded = jwtDecode(data.token);
+        setUsername(decoded.username);
         navigate('/perfil');
       } else {
         setMensaje(data.message || 'Error al iniciar sesión');

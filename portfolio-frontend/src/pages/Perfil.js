@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
-import '../css/Perfil.css';  // Asegúrate de importar el archivo CSS
+import '../css/Perfil.css';
 
-function Perfil() {
+function Perfil({ handleLogout, handleUsernameUpdate }) {
   const [user, setUser] = useState(null);
   const [repos, setRepos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,7 +17,7 @@ function Perfil() {
     if (token) {
       const decoded = jwtDecode(token);
       setUser(decoded);
-      setUserData({ username: decoded.username, email: decoded.email }); // Inicializa los datos del usuario
+      setUserData({ username: decoded.username, email: decoded.email });
     } else {
       navigate('/login');
     }
@@ -44,15 +44,9 @@ function Perfil() {
         });
     }
   }, [userData.username]);
-  
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/login');
-  };
 
   const handleEditClick = () => {
-    setIsEditing(!isEditing); // Cambia el modo de edición
+    setIsEditing(!isEditing);
   };
 
   const handleChange = (e) => {
@@ -86,7 +80,6 @@ function Perfil() {
       const data = await response.json();
       
       if (response.ok) {
-        // Si la actualización es exitosa, actualizamos el estado del usuario
         setUser((prevUser) => ({
           ...prevUser,
           username: userData.username,
@@ -94,6 +87,7 @@ function Perfil() {
         }));
         setIsEditing(false);
         alert('Perfil actualizado correctamente');
+        handleUsernameUpdate(userData.username); // Actualiza el nombre de usuario en el nav
       } else {
         alert(data.message || 'Error al actualizar el perfil');
       }

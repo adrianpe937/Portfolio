@@ -40,9 +40,9 @@ exports.loginUser = async (req, res) => {
     const isMatch = await user.matchPassword(password);
     if (!isMatch) return res.status(400).json({ message: 'Contraseña incorrecta' });
 
-    // 🟢 Incluir más datos en el payload del token
+    // 🟢 Añadimos isAdmin al payload del token
     const token = jwt.sign(
-      { id: user._id, username: user.username, email: user.email },
+      { id: user._id, username: user.username, email: user.email, isAdmin: user.isAdmin }, // Incluimos isAdmin
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
@@ -55,13 +55,21 @@ exports.loginUser = async (req, res) => {
 
 
 
+
+
 // Obtener todos los usuarios
+// controllers/authController.js
 exports.getAllUsers = async (req, res) => {
-    try {
-      const users = await User.find({}, 'username email'); // Solo devolvemos username y email
-      res.status(200).json(users);
-    } catch (error) {
-      res.status(500).json({ message: 'Error al obtener usuarios', error });
-    }
-  };
+  if (!req.user.isAdmin) {
+    return res.status(403).json({ message: 'No tienes permisos para ver esta página' });
+  }
+
+  try {
+    const users = await User.find({}, 'username email'); // Solo devolvemos username y email
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener usuarios', error });
+  }
+};
+
   

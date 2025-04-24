@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
-import { useNavigate } from 'react-router-dom'; // Esto está bien
+import { useNavigate } from 'react-router-dom'; 
 import '../css/Perfil.css';
 
 function Perfil({ handleUsernameUpdate }) {
@@ -19,15 +19,14 @@ function Perfil({ handleUsernameUpdate }) {
       setUser(decoded);
       setUserData({ username: decoded.username, email: decoded.email });
     } else {
-      // Si no hay token, redirigir al login
       navigate('/login');
     }
   }, [navigate]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    setUser(null); // Limpiar estado de usuario
-    navigate('/login'); // Redirige al login
+    setUser(null);
+    navigate('/login');
   };
 
   useEffect(() => {
@@ -94,7 +93,7 @@ function Perfil({ handleUsernameUpdate }) {
         }));
         setIsEditing(false);
         alert('Perfil actualizado correctamente');
-        handleUsernameUpdate(userData.username); // Actualiza el nombre de usuario en el nav
+        handleUsernameUpdate(userData.username);
       } else {
         alert(data.message || 'Error al actualizar el perfil');
       }
@@ -107,7 +106,6 @@ function Perfil({ handleUsernameUpdate }) {
   return (
     <div className="container">
       <div className="innerWrapper">
-        {/* Tabla de Perfil */}
         <div className="card">
           <h2 className="heading">👤 Perfil del Usuario</h2>
           {user ? (
@@ -158,6 +156,10 @@ function Perfil({ handleUsernameUpdate }) {
                     <tr>
                       <td>GitHub</td>
                       <td>{user.username}</td>
+                    </tr>
+                    <tr>
+                      <td>Rol</td>
+                      <td>{user.isAdmin ? 'Administrador' : 'Usuario Regular'}</td>
                     </tr>
                   </tbody>
                 </table>

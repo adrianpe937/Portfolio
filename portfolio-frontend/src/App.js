@@ -6,6 +6,7 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import Usuarios from './pages/Usuarios';
 import Perfil from './pages/Perfil';
+import Portfolio from './pages/Portfolio';
 
 function App() {
   const [username, setUsername] = useState('');
@@ -36,9 +37,10 @@ function App() {
     <Router>
       <nav>
         <div className="nav-links">
-          <Link to="/register">Registro</Link>
+          {!username && <Link to="/register">Registro</Link>}
           {!username && <Link to="/login">Login</Link>}
           <Link to="/usuarios">Usuarios</Link>
+          <Link to="/Portfolio">portfolio</Link>
           {username && <Link to="/perfil">Perfil</Link>}
         </div>
         {username && (
@@ -50,6 +52,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login setUsername={setUsername} />} />
         <Route path="/usuarios" element={<Usuarios />} />
+        <Route path="/portfolio" element={<Portfolio />} />
         <Route
           path="/perfil"
           element={<Perfil handleLogout={handleLogout} handleUsernameUpdate={handleUsernameUpdate} />}

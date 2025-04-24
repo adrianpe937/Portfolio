@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; // Esto está bien
 import '../css/Perfil.css';
 
-function Perfil({ handleLogout, handleUsernameUpdate }) {
+function Perfil({ handleUsernameUpdate }) {
   const [user, setUser] = useState(null);
   const [repos, setRepos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -19,9 +19,16 @@ function Perfil({ handleLogout, handleUsernameUpdate }) {
       setUser(decoded);
       setUserData({ username: decoded.username, email: decoded.email });
     } else {
+      // Si no hay token, redirigir al login
       navigate('/login');
     }
   }, [navigate]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setUser(null); // Limpiar estado de usuario
+    navigate('/login'); // Redirige al login
+  };
 
   useEffect(() => {
     if (userData.username) {

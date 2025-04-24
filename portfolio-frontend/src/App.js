@@ -1,23 +1,27 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import Register from './pages/Register';
+import Login from './pages/Login';
+import Usuarios from './pages/Usuarios';
+import Perfil from './pages/Perfil';
 
-// Tus componentes
-function Home() {
-  return <h2>Home</h2>;
-}
 
-function About() {
-  return <h2>About</h2>;
-}
 
 function App() {
   return (
-    <BrowserRouter>
+    <Router>
+      <nav>
+        <Link to="/register">Registro</Link> | 
+        <Link to="/login">Login</Link> | 
+        <Link to="/usuarios">Usuarios</Link>
+      </nav>
+
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/usuarios" element={<Usuarios />} />
+        <Route path="/perfil" element={<Perfil />} />
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 }
 

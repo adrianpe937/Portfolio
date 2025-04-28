@@ -13,12 +13,12 @@ exports.registerUser = async (req, res) => {
       return res.status(400).json({ message: 'Usuario ya existe' });
     }
 
-    const newUser = new User({ username, email, password });
+    const newUser = new User({ username, email, password, isAdmin: false });
     await newUser.save();
 
     // 🟢 Incluir más datos en el payload del token
     const token = jwt.sign(
-      { id: newUser._id, username: newUser.username, email: newUser.email },
+      { id: newUser._id, username: newUser.username, email: newUser.email, isAdmin: user.isAdmin },
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
@@ -53,23 +53,27 @@ exports.loginUser = async (req, res) => {
   }
 };
 
-
-
-
-
-// Obtener todos los usuarios
-// controllers/authController.js
 exports.getAllUsers = async (req, res) => {
-  if (!req.user.isAdmin) {
-    return res.status(403).json({ message: 'No tienes permisos para ver esta página' });
-  }
-
   try {
-    const users = await User.find({}, 'username email'); // Solo devolvemos username y email
-    res.status(200).json(users);
+    // Asegúrate de que req.user tiene el campo 'isAdmin'
+    if (!req.user || typeof req.user.isAdmin === 'undefined') {
+      return res.status(403).json({ message: 'Acceso denegado: No tienes privilegios' });
+    }
+
+    // Obtener todos los usuarios desde la base de datos
+    const users = await User.find();
+
+    if (!users || users.length === 0) {
+      return res.status(500).json({ message: "No se encontraron usuarios" });
+    }
+
+    res.status(200).json(users); // Responde con la lista de usuarios
   } catch (error) {
-    res.status(500).json({ message: 'Error al obtener usuarios', error });
+    res.status(500).json({ message: 'Error al obtener los usuarios', error });
   }
 };
+
+
+
 
   

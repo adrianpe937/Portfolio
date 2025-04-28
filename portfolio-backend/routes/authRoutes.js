@@ -1,25 +1,18 @@
-// routes/authRoutes.js
 const express = require('express');
-const User = require('../models/User'); // Asegúrate de que la ruta sea correcta
+const router = express.Router();
 const { registerUser, loginUser, getAllUsers } = require('../controllers/authController');
 const { updateUserProfile } = require('../controllers/PerfilController');
-const authenticateToken = require('../middlewares/AuthenticateToken'); // Importa el middleware
-const isAdmin = require('../middlewares/isAdmin'); // Importa el middleware
-const router = express.Router();
+const authenticateToken = require('../middlewares/AuthenticateToken'); 
+const isAdmin = require('../middlewares/isAdmin'); 
 
-// Ruta para registrar un nuevo usuario
+// Rutas
 router.post('/register', registerUser);
-
-// Ruta para login de un usuario
 router.post('/login', loginUser);
 
-// Ruta para obtener todos los usuarios
-router.get('/users', getAllUsers);
+// 🟢 AÑADIR authenticateToken antes de getAllUsers
+router.get('/users', authenticateToken, getAllUsers);
 
-// Ruta para actualizar el perfil del usuario, con autenticación
-router.put('/update-profile', authenticateToken, updateUserProfile); // Añade el middleware aquí
-
-// Ruta protegida para administradores
+router.put('/update-profile', authenticateToken, updateUserProfile);
 router.get('/admin-dashboard', authenticateToken, isAdmin);
 
 module.exports = router;

@@ -1,25 +1,17 @@
-// middleware/authenticateToken.js
 const jwt = require('jsonwebtoken');
 
-// Middleware para verificar el JWT
-const authenticateToken = (req, res, next) => {
-  // Obtenemos el token desde el encabezado Authorization
-  const token = req.header('Authorization')?.replace('Bearer ', '');
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
 
-  if (!token) {
-    return res.status(401).json({ message: 'No token provided' });
-  }
+  if (!token) return res.sendStatus(401);
 
-  // Verificamos el token usando el secreto JWT
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) {
-      return res.status(403).json({ message: 'Invalid token' });
-    }
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
 
-    // Si el token es válido, asignamos los datos del usuario a req.user
-    req.user = decoded;
-    next(); // Pasamos al siguiente middleware o controlador
+    req.user = user; // 🟢 Asignamos el usuario decodificado al request
+    next();
   });
-};
+}
 
 module.exports = authenticateToken;

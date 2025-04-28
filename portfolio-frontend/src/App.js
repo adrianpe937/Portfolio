@@ -4,14 +4,34 @@ import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Register from './pages/Register';
 import Login from './pages/Login';
-import Usuarios from './pages/Usuarios';
+import Users from './pages/Usuarios'; 
 import Perfil from './pages/Perfil';
 import Portfolio from './pages/Portfolio';
 import CrearPortfolio from './pages/CrearPortfolio';
 
+
+
+
 function App() {
   const [username, setUsername] = useState('');
   const [isAdmin, setIsAdmin] = useState(false); // Nuevo estado para manejar el rol de admin
+  const [loadingUser, setLoadingUser] = useState(true);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        setUsername(decoded.username);
+        setIsAdmin(decoded.isAdmin);
+      } catch (error) {
+        setUsername('');
+        setIsAdmin(false);
+      }
+    }
+    setLoadingUser(false); // terminamos de cargar
+  }, []);
+  
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -57,7 +77,7 @@ function App() {
       <Routes>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login setUsername={setUsername} />} />
-        {isAdmin && <Route path="/usuarios" element={<Usuarios />} />} {/* Solo visible si es admin */}
+        <Route path="/usuarios" element={<Users isAdmin={isAdmin} />} />
         <Route path="/portfolio" element={<Portfolio />} />
         <Route path="/crear-portfolio" element={<CrearPortfolio />} />
         <Route

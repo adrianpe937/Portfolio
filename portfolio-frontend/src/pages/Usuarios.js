@@ -52,6 +52,7 @@ function Users({ isAdmin }) {
           <tr>
             <th>Nombre de Usuario</th>
             <th>Email</th>
+            <th>rol</th>
           </tr>
         </thead>
         <tbody>
@@ -59,6 +60,7 @@ function Users({ isAdmin }) {
             <tr key={user._id}>
               <td>{user.username}</td>
               <td>{user.email}</td>
+              <td>{user.isAdmin ? 'Administrador' : 'Usuario Regular'}</td>
             </tr>
           ))}
         </tbody>

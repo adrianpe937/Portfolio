@@ -1,0 +1,123 @@
+/* NAVBAR */
+nav {
+  background-color: var(--nav-bg);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid var(--table-border);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* CONTENEDORES */
+.nav-links,
+.nav-right {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* ENLACES DEL NAVBAR */
+nav a {
+  color: var(--nav-link);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+nav a:hover {
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+/* USUARIO */
+.user-info {
+  color: var(--text-color);
+  background-color: var(--card-bg);
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px var(--table-border);
+  margin-right: 1rem;
+}
+
+/* BOTÓN CERRAR SESIÓN Y CAMBIO DE TEMA */
+nav button {
+  background-color: var(--button-bg);
+  color: #fff;
+  border: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.4rem 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+nav button:hover {
+  background-color: var(--button-hover);
+  transform: translateY(-1px);
+}
+
+nav button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--nav-link-hover);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-links,
+  .nav-right {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    margin-top: 0.5rem;
+    gap: 0.5rem;
+  }
+
+  .user-info {
+    margin: 0.5rem 0;
+  }
+}
+
+body.dark {
+  background-color: #333;
+  color: #fff;
+}
+
+body.dark .card {
+  background-color: #444;
+  color: #fff;
+}
+
+body.dark .editButton {
+  background-color: #555;
+  border: 2px solid #888;
+  color: #fff;
+}
+
+body.dark .saveButton {
+  background-color: #444;
+  border: 2px solid #666;
+  color: #fff;
+}
+
+body.dark .logoutButton {
+  background-color: #f44336;
+  border: 2px solid #d32f2f;
+  color: #fff;
+}

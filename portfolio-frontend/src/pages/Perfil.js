@@ -3,14 +3,14 @@ import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom'; 
 import '../css/Perfil.css';
 
-function Perfil({ handleUsernameUpdate }) {
+function Perfil({ handleUsernameUpdate, handleLogout }) {
   const [user, setUser] = useState(null);
   const [repos, setRepos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [userData, setUserData] = useState({ username: '', email: '' });
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Hook para la redirección
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -18,50 +18,32 @@ function Perfil({ handleUsernameUpdate }) {
       const decoded = jwtDecode(token);
       setUser(decoded);
       setUserData({ username: decoded.username, email: decoded.email });
-    } else {
-      navigate('/login');
-    }
-  }, [navigate]);
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    setUser(null);
-    navigate('/login');
-  };
-
-  useEffect(() => {
-    if (userData.username) {
-      setLoading(true);
-      fetch(`https://api.github.com/users/${userData.username}/repos?sort=updated&per_page=6`)
+      // Obtener los repositorios de GitHub
+      if (userData.username) {
+        setLoading(true);
+        fetch(`https://api.github.com/users/${userData.username}/repos?sort=updated&per_page=6`)
         .then(res => res.json())
         .then(data => {
-          if (Array.isArray(data)) {
-            setRepos(data);
-            setError(null);
-          } else {
-            setRepos([]);
-            setError('No hay repositorios disponibles.');
-          }
-          setLoading(false);
+        if (Array.isArray(data)) {
+        setRepos(data);
+        setError(null);
+        } else {
+        setRepos([]);
+        setError('No hay repositorios disponibles.');
+        }
+        setLoading(false);
         })
         .catch(err => {
-          setError(err.message);
-          setLoading(false);
+        setError(err.message);
+        setLoading(false);
         });
+        }
+
+    } else {
+      navigate('/login'); // Redirige a login si no hay token
     }
-  }, [userData.username]);
-
-  const handleEditClick = () => {
-    setIsEditing(!isEditing);
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUserData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+  }, [navigate, userData.username]);
 
   const handleSave = async () => {
     const token = localStorage.getItem('token');
@@ -103,6 +85,11 @@ function Perfil({ handleUsernameUpdate }) {
     }
   };
 
+  const handleLogoutAndRedirect = () => {
+    handleLogout(); // Esto limpia el estado en App
+    navigate('/login'); // Redirige a la página de login
+  };
+
   return (
     <div className="container">
       <div className="innerWrapper">
@@ -119,7 +106,7 @@ function Perfil({ handleUsernameUpdate }) {
                       id="username"
                       name="username"
                       value={userData.username}
-                      onChange={handleChange}
+                      onChange={e => setUserData({ ...userData, username: e.target.value })}
                     />
                   </div>
                   <div>
@@ -129,7 +116,7 @@ function Perfil({ handleUsernameUpdate }) {
                       id="email"
                       name="email"
                       value={userData.email}
-                      onChange={handleChange}
+                      onChange={e => setUserData({ ...userData, email: e.target.value })}
                     />
                   </div>
                   <button onClick={handleSave} className="saveButton">Guardar cambios</button>
@@ -155,7 +142,7 @@ function Perfil({ handleUsernameUpdate }) {
                     </tr>
                     <tr>
                       <td>GitHub</td>
-                      <td>{user.username}</td>
+                      <td>{user.githubUsername}</td>
                     </tr>
                     <tr>
                       <td>Rol</td>
@@ -170,52 +157,47 @@ function Perfil({ handleUsernameUpdate }) {
           )}
 
           {!isEditing && (
-            <button
-              onClick={handleLogout}
-              className="logoutButton"
-            >
+            <button onClick={handleLogoutAndRedirect} className="logoutButton">
               Cerrar sesión
             </button>
           )}
 
-          <button
-            onClick={handleEditClick}
-            className="editButton"
-          >
+          <button onClick={() => setIsEditing(!isEditing)} className="editButton">
             {isEditing ? 'Cancelar' : 'Editar Perfil'}
           </button>
         </div>
 
-        {/* Repositorios GitHub */}
+        {/* Mostrar repositorios de GitHub */}
         <div>
-          <h3 className="reposHeading">📁 Repositorios públicos en GitHub</h3>
-          {loading ? (
-            <div className="spinner"></div>
-          ) : error ? (
-            <p className="errorText">{error}</p>
-          ) : repos.length > 0 ? (
-            <div className="reposGrid">
-              {repos.map(repo => (
-                <div key={repo.id} className="repoCard">
-                  <h4 className="repoTitle">
-                    <a href={repo.html_url} target="_blank" rel="noopener noreferrer">
-                      {repo.name}
-                    </a>
-                  </h4>
-                  <p className="repoDesc">
-                    {repo.description || 'Sin descripción'}
-                  </p>
-                  <div className="repoStats">
-                    <span>⭐ {repo.stargazers_count}</span>
-                    <span>👁️ {repo.watchers_count}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="noReposText">Este usuario no tiene repositorios públicos.</p>
-          )}
-        </div>
+<h3 className="reposHeading">📁 Repositorios públicos en GitHub</h3>
+{loading ? (
+<div className="spinner"></div>
+) : error ? (
+<p className="errorText">{error}</p>
+) : repos.length > 0 ? (
+<div className="reposGrid">
+{repos.map(repo => (
+<div key={repo.id} className="repoCard">
+<h4 className="repoTitle">
+<a href={repo.html_url} target="_blank" rel="noopener noreferrer">
+{repo.name}
+</a>
+</h4>
+<p className="repoDesc">
+{repo.description || 'Sin descripción'}
+</p>
+<div className="repoStats">
+<span>⭐ {repo.stargazers_count}</span>
+<span>👁️ {repo.watchers_count}</span>
+</div>
+</div>
+))}
+</div>
+) : (
+<p className="noReposText">Este usuario no tiene repositorios públicos.</p>
+)}
+</div>
+
       </div>
     </div>
   );

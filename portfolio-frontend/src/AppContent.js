@@ -6,7 +6,7 @@ import Login from './pages/Login';
 import Users from './pages/Usuarios';
 import Perfil from './pages/Perfil';
 import Portfolio from './pages/Portfolio';
-import CrearPortfolio from './pages/CrearPortfolio';
+import AlertaEmpleo from './pages/AlertaEmpleo';
 import Dashboard from './pages/Dashboard';
 import useDarkMode from './hooks/useDarkMode';
 
@@ -51,7 +51,7 @@ function AppContent() {
           {!username && <Link to="/login">Login</Link>}
           {isAdmin && <Link to="/usuarios">Usuarios</Link>}
           <Link to="/portfolio">Portfolio</Link>
-          <Link to="/crear-portfolio">Crea tu propio Portfolio</Link>
+          <Link to="/alerta-empleo">Alerta de Empleo</Link>
           {username && <Link to="/perfil">Perfil</Link>}
           {username && <Link to="/dashboard">Dashboard</Link>}
         </div>
@@ -80,7 +80,7 @@ function AppContent() {
         <Route path="/login" element={<Login setUsername={setUsername} />} />
         <Route path="/usuarios" element={<Users isAdmin={isAdmin} />} />
         <Route path="/portfolio" element={<Portfolio />} />
-        <Route path="/crear-portfolio" element={<CrearPortfolio />} />
+        <Route path="/alerta-empleo" element={<AlertaEmpleo />} />
         <Route
           path="/perfil"
           element={<Perfil handleLogout={handleLogout} handleUsernameUpdate={handleUsernameUpdate} />}

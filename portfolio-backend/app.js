@@ -5,6 +5,18 @@ const authRoutes = require('./routes/authRoutes'); // importa tus rutas
 const mongoose = require('mongoose');
 const cors = require('cors');
 
+const allowedOrigins = ['http://localhost:3000', 'https://<your-ngrok-url>'];
+app.use(cors({
+  origin: (origin, callback) => {
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+}));
+
+
 app.use(cors()); // para que React pueda hacer peticiones al backend
 app.use(express.json());
 

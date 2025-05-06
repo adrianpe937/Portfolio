@@ -9,7 +9,10 @@ function Perfil({ handleUsernameUpdate, handleLogout }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [userData, setUserData] = useState({ username: '', email: '' });
+  const [userData, setUserData] = useState({ username: '', email: '', twitter: '', linkedin: '' });
+  const [mensaje, setMensaje] = useState('');
+  const [red, setRed] = useState('twitter');
+  const [fecha, setFecha] = useState('');
   const navigate = useNavigate(); // Hook para la redirección
 
   useEffect(() => {
@@ -17,7 +20,7 @@ function Perfil({ handleUsernameUpdate, handleLogout }) {
     if (token) {
       const decoded = jwtDecode(token);
       setUser(decoded);
-      setUserData({ username: decoded.username, email: decoded.email });
+      setUserData({ username: decoded.username, email: decoded.email, twitter: decoded.twitter || '', linkedin: decoded.linkedin || '' });
 
       // Obtener los repositorios de GitHub
       if (userData.username) {
@@ -39,7 +42,6 @@ function Perfil({ handleUsernameUpdate, handleLogout }) {
         setLoading(false);
         });
         }
-
     } else {
       navigate('/login'); // Redirige a login si no hay token
     }
@@ -62,6 +64,8 @@ function Perfil({ handleUsernameUpdate, handleLogout }) {
         body: JSON.stringify({
           username: userData.username,
           email: userData.email,
+          twitter: userData.twitter,
+          linkedin: userData.linkedin
         }),
       });
 
@@ -72,6 +76,8 @@ function Perfil({ handleUsernameUpdate, handleLogout }) {
           ...prevUser,
           username: userData.username,
           email: userData.email,
+          twitter: userData.twitter,
+          linkedin: userData.linkedin
         }));
         setIsEditing(false);
         alert('Perfil actualizado correctamente');
@@ -82,6 +88,45 @@ function Perfil({ handleUsernameUpdate, handleLogout }) {
     } catch (error) {
       console.error('Error:', error);
       alert('Error al actualizar el perfil');
+    }
+  };
+
+  const handlePostSchedule = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('No estás autenticado');
+      return;
+    }
+
+    const postData = {
+      mensaje,
+      red,
+      fechaProgramada: fecha,
+      userId: user.id
+    };
+
+    try {
+      const response = await fetch('http://localhost:5000/programar-publicacion', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(postData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert('Publicación programada correctamente');
+        setMensaje('');
+        setFecha('');
+      } else {
+        alert(data.message || 'Error al programar la publicación');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Error al programar la publicación');
     }
   };
 
@@ -119,6 +164,26 @@ function Perfil({ handleUsernameUpdate, handleLogout }) {
                       onChange={e => setUserData({ ...userData, email: e.target.value })}
                     />
                   </div>
+                  <div>
+                    <label htmlFor="twitter">Twitter</label>
+                    <input
+                      type="text"
+                      id="twitter"
+                      name="twitter"
+                      value={userData.twitter}
+                      onChange={e => setUserData({ ...userData, twitter: e.target.value })}
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="linkedin">LinkedIn</label>
+                    <input
+                      type="text"
+                      id="linkedin"
+                      name="linkedin"
+                      value={userData.linkedin}
+                      onChange={e => setUserData({ ...userData, linkedin: e.target.value })}
+                    />
+                  </div>
                   <button onClick={handleSave} className="saveButton">Guardar cambios</button>
                 </form>
               ) : (
@@ -141,8 +206,12 @@ function Perfil({ handleUsernameUpdate, handleLogout }) {
                       <td>{user.id}</td>
                     </tr>
                     <tr>
-                      <td>GitHub</td>
-                      <td>{user.githubUsername}</td>
+                      <td>Twitter</td>
+                      <td>{user.twitter || 'No proporcionado'}</td>
+                    </tr>
+                    <tr>
+                      <td>LinkedIn</td>
+                      <td>{user.linkedin || 'No proporcionado'}</td>
                     </tr>
                     <tr>
                       <td>Rol</td>
@@ -167,37 +236,63 @@ function Perfil({ handleUsernameUpdate, handleLogout }) {
           </button>
         </div>
 
-        {/* Mostrar repositorios de GitHub */}
+        {/* Sección para programar publicaciones */}
         <div>
-<h3 className="reposHeading">📁 Repositorios públicos en GitHub</h3>
-{loading ? (
-<div className="spinner"></div>
-) : error ? (
-<p className="errorText">{error}</p>
-) : repos.length > 0 ? (
-<div className="reposGrid">
-{repos.map(repo => (
-<div key={repo.id} className="repoCard">
-<h4 className="repoTitle">
-<a href={repo.html_url} target="_blank" rel="noopener noreferrer">
-{repo.name}
-</a>
-</h4>
-<p className="repoDesc">
-{repo.description || 'Sin descripción'}
-</p>
-<div className="repoStats">
-<span>⭐ {repo.stargazers_count}</span>
-<span>👁️ {repo.watchers_count}</span>
-</div>
-</div>
-))}
-</div>
-) : (
-<p className="noReposText">Este usuario no tiene repositorios públicos.</p>
-)}
-</div>
-
+          <h3 className="heading">📢 Programar Publicaciones</h3>
+          <form onSubmit={e => e.preventDefault()}>
+            <div>
+              <textarea 
+                value={mensaje} 
+                onChange={e => setMensaje(e.target.value)} 
+                placeholder="Escribe tu mensaje para publicar..."
+              />
+            </div>
+            <div>
+              <select value={red} onChange={e => setRed(e.target.value)}>
+                <option value="twitter">Twitter</option>
+                <option value="linkedin">LinkedIn</option>
+              </select>
+            </div>
+            <div>
+              <input 
+                type="datetime-local" 
+                value={fecha} 
+                onChange={e => setFecha(e.target.value)} 
+              />
+            </div>
+            <button onClick={handlePostSchedule} className="scheduleButton">Programar Publicación</button>
+          </form>
+        </div>
+         {/* Mostrar repositorios de GitHub */}
+         <div>
+          <h3 className="reposHeading">📁 Repositorios públicos en GitHub</h3>
+          {loading ? (
+            <div className="spinner"></div>
+          ) : error ? (
+            <p className="errorText">{error}</p>
+          ) : repos.length > 0 ? (
+            <div className="reposGrid">
+              {repos.map(repo => (
+                <div key={repo.id} className="repoCard">
+                  <h4 className="repoTitle">
+                    <a href={repo.html_url} target="_blank" rel="noopener noreferrer">
+                      {repo.name}
+                    </a>
+                  </h4>
+                  <p className="repoDesc">
+                    {repo.description || 'Sin descripción'}
+                  </p>
+                  <div className="repoStats">
+                    <span>⭐ {repo.stargazers_count}</span>
+                    <span>👁️ {repo.watchers_count}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="noReposText">Este usuario no tiene repositorios públicos.</p>
+          )}
+        </div>
       </div>
     </div>
   );

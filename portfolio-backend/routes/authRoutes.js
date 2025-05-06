@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { registerUser, loginUser, getAllUsers } = require('../controllers/authController');
-const { updateUserProfile } = require('../controllers/PerfilController');
+const { updateUserProfile, getUserProfile } = require('../controllers/PerfilController');
 const authenticateToken = require('../middlewares/AuthenticateToken'); 
 const isAdmin = require('../middlewares/isAdmin'); 
 const { crearAlertaEmpleo } = require('../controllers/alertaEmpleoController');
@@ -15,8 +15,8 @@ router.get('/users', authenticateToken, getAllUsers);
 router.put('/update-profile', authenticateToken, updateUserProfile);
 router.get('/admin-dashboard', authenticateToken, isAdmin);
 
+router.get('/get-user', authenticateToken, getUserProfile);
 
 router.post('/alerta-empleo', authenticateToken, crearAlertaEmpleo);
-
 
 module.exports = router;

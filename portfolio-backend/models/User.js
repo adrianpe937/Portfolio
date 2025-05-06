@@ -5,7 +5,9 @@ const userSchema = new mongoose.Schema({
   username: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  isAdmin: { type: Boolean, default: false } // Asegúrate de que isAdmin esté presente
+  isAdmin: { type: Boolean, default: false },
+  twitter: { type: String, default: '' }, // Campo para Twitter
+  linkedin: { type: String, default: '' } // Campo para LinkedIn
 });
 
 // Antes de guardar, encriptar contraseña

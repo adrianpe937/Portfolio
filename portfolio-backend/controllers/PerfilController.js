@@ -1,10 +1,9 @@
 // controllers/perfilController.js
 const User = require('../models/User'); // Importamos el modelo de usuario
-const TwitterClient = require('../utils/TwitterClient'); // Importar cliente de Twitter
 
 // Actualizar el perfil del usuario
 exports.updateUserProfile = async (req, res) => {
-  const { username, email } = req.body;
+  const { username, email, twitter, linkedin } = req.body;
   const userId = req.user.id; // Esto asume que tienes un token JWT que ya ha decodificado el id del usuario.
   console.log('Usuario autenticado:', req.user);
 
@@ -19,6 +18,8 @@ exports.updateUserProfile = async (req, res) => {
     // Actualizamos el usuario
     user.username = username || user.username;
     user.email = email || user.email;
+    user.twitter = twitter || user.twitter;
+    user.linkedin = linkedin || user.linkedin;
 
     // Guardamos los cambios en la base de datos
     await user.save();
@@ -31,23 +32,20 @@ exports.updateUserProfile = async (req, res) => {
   }
 };
 
-exports.postToTwitter = async (req, res) => {
-  const { repos, userId } = req.body;
+// Obtener el perfil del usuario autenticado
+exports.getUserProfile = async (req, res) => {
+  const userId = req.user.id;
 
   try {
     const user = await User.findById(userId);
-    if (!user || !user.twitter) {
-      return res.status(404).json({ message: 'Usuario no encontrado o Twitter no configurado' });
+
+    if (!user) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
     }
 
-    for (const repo of repos) {
-      const tweet = `🚀 Nuevo proyecto en GitHub: ${repo.name}\n${repo.html_url}\nDescripción: ${repo.description || 'Sin descripción'}`;
-      await TwitterClient.postTweet(tweet); // Publicar en Twitter
-    }
-
-    res.status(200).json({ message: 'Publicaciones en Twitter realizadas con éxito' });
+    res.status(200).json({ user });
   } catch (error) {
-    console.error('Error al publicar en Twitter:', error);
-    res.status(500).json({ message: 'Error al publicar en Twitter', error });
+    console.error('Error al obtener el perfil del usuario:', error);
+    res.status(500).json({ message: 'Error al obtener el perfil del usuario', error });
   }
 };

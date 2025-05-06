@@ -19,33 +19,62 @@ function Perfil({ handleUsernameUpdate, handleLogout }) {
     const token = localStorage.getItem('token');
     if (token) {
       const decoded = jwtDecode(token);
-      setUser(decoded);
-      setUserData({ username: decoded.username, email: decoded.email, twitter: decoded.twitter || '', linkedin: decoded.linkedin || '' });
 
-      // Obtener los repositorios de GitHub
-      if (userData.username) {
-        setLoading(true);
-        fetch(`https://api.github.com/users/${userData.username}/repos?sort=updated&per_page=6`)
-        .then(res => res.json())
-        .then(data => {
-        if (Array.isArray(data)) {
-        setRepos(data);
-        setError(null);
-        } else {
-        setRepos([]);
-        setError('No hay repositorios disponibles.');
+      const fetchUserData = async () => {
+        try {
+          const response = await fetch('http://localhost:5000/get-user', {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            },
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            setUser(data.user);
+            setUserData({
+              username: data.user.username,
+              email: data.user.email,
+              twitter: data.user.twitter || '',
+              linkedin: data.user.linkedin || '',
+            });
+
+            // Obtener los repositorios de GitHub
+            if (data.user.username) {
+              try {
+                const reposResponse = await fetch(`https://api.github.com/users/${data.user.username}/repos?sort=updated&per_page=6`);
+                const reposData = await reposResponse.json();
+
+                if (Array.isArray(reposData)) {
+                  setRepos(reposData);
+                  setError(null);
+                } else {
+                  setRepos([]);
+                  setError('No hay repositorios disponibles.');
+                }
+              } catch (reposError) {
+                console.error('Error al obtener los repositorios:', reposError);
+                setError('Error al obtener los repositorios.');
+                setRepos([]);
+              }
+            }
+          } else {
+            console.error('Error al obtener los datos del usuario:', response.statusText);
+            navigate('/login'); // Redirige a login si hay un error
+          }
+        } catch (error) {
+          console.error('Error al obtener los datos del usuario:', error);
+          navigate('/login'); // Redirige a login si hay un error
+        } finally {
+          setLoading(false); // Asegurarse de que el estado de carga se actualice
         }
-        setLoading(false);
-        })
-        .catch(err => {
-        setError(err.message);
-        setLoading(false);
-        });
-        }
+      };
+
+      fetchUserData();
     } else {
       navigate('/login'); // Redirige a login si no hay token
     }
-  }, [navigate, userData.username]);
+  }, [navigate]);
 
   const handleSave = async () => {
     const token = localStorage.getItem('token');
@@ -72,16 +101,17 @@ function Perfil({ handleUsernameUpdate, handleLogout }) {
       const data = await response.json();
       
       if (response.ok) {
-        setUser((prevUser) => ({
-          ...prevUser,
-          username: userData.username,
-          email: userData.email,
-          twitter: userData.twitter,
-          linkedin: userData.linkedin
-        }));
+        // Actualizar el estado del usuario con los datos devueltos por el backend
+        setUser(data.user);
+        setUserData({
+          username: data.user.username,
+          email: data.user.email,
+          twitter: data.user.twitter || '',
+          linkedin: data.user.linkedin || ''
+        });
         setIsEditing(false);
         alert('Perfil actualizado correctamente');
-        handleUsernameUpdate(userData.username);
+        handleUsernameUpdate(data.user.username);
       } else {
         alert(data.message || 'Error al actualizar el perfil');
       }
@@ -202,8 +232,6 @@ function Perfil({ handleUsernameUpdate, handleLogout }) {
                       <td>{user.email}</td>
                     </tr>
                     <tr>
-                      <td>ID</td>
-                      <td>{user.id}</td>
                     </tr>
                     <tr>
                       <td>Twitter</td>
@@ -264,7 +292,7 @@ function Perfil({ handleUsernameUpdate, handleLogout }) {
           </form>
         </div>
          {/* Mostrar repositorios de GitHub */}
-         <div>
+        <div>
           <h3 className="reposHeading">📁 Repositorios públicos en GitHub</h3>
           {loading ? (
             <div className="spinner"></div>

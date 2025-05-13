@@ -6,8 +6,8 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   isAdmin: { type: Boolean, default: false },
-  twitter: { type: String, default: '' }, // Campo para Twitter
-  linkedin: { type: String, default: '' } // Campo para LinkedIn
+  twitter: { type: String, default: '' },
+  linkedin: { type: String, default: '' }
 });
 
 // Antes de guardar, encriptar contraseña
@@ -24,4 +24,5 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-module.exports = mongoose.model('User', userSchema);
+// Ensure the model uses the "users" collection
+module.exports = mongoose.model('User', userSchema, 'users');

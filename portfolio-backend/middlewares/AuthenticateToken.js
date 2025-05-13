@@ -12,8 +12,7 @@ function authenticateToken(req, res, next) {
     if (err) {
       return res.status(403).json({ message: 'Token inválido o expirado' });
     }
-
-    req.user = user; // Asignamos el usuario decodificado al request
+    req.user = user; // Asegúrate de que el usuario decodificado se asigne correctamente
     next();
   });
 }

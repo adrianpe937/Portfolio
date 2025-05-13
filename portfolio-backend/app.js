@@ -1,33 +1,55 @@
 const express = require('express');
-require('dotenv').config();
-const app = express();
-const authRoutes = require('./routes/authRoutes'); // importa tus rutas
 const mongoose = require('mongoose');
 const cors = require('cors');
+const bodyParser = require('body-parser');
+require('dotenv').config();
 
-const allowedOrigins = ['http://localhost:3000', 'https://<your-ngrok-url>'];
+const authRoutes = require('./routes/authRoutes');
+const portfolioRoutes = require('./routes/portfolioRoutes');
+
+const app = express();
+
+// ✅ Configuración CORS segura
+const allowedOrigins = ['http://localhost:3000'];
+
 app.use(cors({
-  origin: (origin, callback) => {
-    if (allowedOrigins.indexOf(origin) !== -1) {
+  origin: function (origin, callback) {
+    // Permitir también herramientas como Postman (sin origin)
+    if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
     }
-  }
+  },
+  credentials: true
 }));
 
-
-app.use(cors()); // para que React pueda hacer peticiones al backend
+// ✅ Middlewares esenciales
+app.use(bodyParser.json());
 app.use(express.json());
 
-app.use('/', authRoutes); // monta las rutas
-app.get('/', (req, res) => {
-  res.send('API funcionando');
+// ✅ Ruta de prueba
+app.get('/test', (req, res) => {
+  res.send('Servidor funciona correctamente ✔️');
 });
 
+// ✅ Rutas de la API
+app.use('/api/auth', authRoutes);
+app.use('/api/portfolio', portfolioRoutes);
 
-mongoose.connect('mongodb://localhost:27017/portfolioDB')
-  .then(() => console.log('Conectado a MongoDB'))
-  .catch((err) => console.error('Error de conexión', err));
+// ✅ Conexión a MongoDB
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log('✅ Conectado a la base de datos "portfolio" en MongoDB Atlas'))
+.catch((err) => {
+  console.error('❌ Error de conexión a MongoDB Atlas:', err);
+  process.exit(1); // Exit the process if the connection fails
+});
 
-app.listen(5000, () => console.log('Servidor backend en http://localhost:5000'));
+// ✅ Arrancar el servidor
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`🚀 Servidor backend corriendo en http://localhost:${PORT}`);
+});

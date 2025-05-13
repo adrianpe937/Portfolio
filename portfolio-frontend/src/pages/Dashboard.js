@@ -3,32 +3,83 @@ import { Bar, Pie } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
 
 function Dashboard() {
-  const [repoStats, setRepoStats] = useState([]);
+  const [portfolioData, setPortfolioData] = useState([]);
+  const [formData, setFormData] = useState({ section: '', content: {} });
+  const [editingId, setEditingId] = useState(null);
 
   useEffect(() => {
-    // Llama a tu backend o API de GitHub
-    fetch('/api/github/repos') // O directamente a la API de GitHub si está permitido
+    fetch('/api/portfolio', { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
       .then(res => res.json())
-      .then(data => {
-        setRepoStats(data);
-      });
+      .then(data => setPortfolioData(data));
   }, []);
 
-  const chartData = {
-    labels: repoStats.map(repo => repo.name),
-    datasets: [
-      {
-        label: 'Estrellas',
-        data: repoStats.map(repo => repo.stars),
-        backgroundColor: 'rgba(75,192,192,0.6)',
-      },
-    ],
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleAdd = () => {
+    fetch('/api/portfolio', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('token')}` },
+      body: JSON.stringify(formData),
+    }).then(() => window.location.reload());
+  };
+
+  const handleEdit = (id, section, content) => {
+    setEditingId(id);
+    setFormData({ section, content });
+  };
+
+  const handleUpdate = () => {
+    fetch(`/api/portfolio/${editingId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('token')}` },
+      body: JSON.stringify(formData),
+    }).then(() => {
+      setEditingId(null);
+      window.location.reload();
+    });
+  };
+
+  const handleDelete = (id) => {
+    fetch(`/api/portfolio/${id}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+    }).then(() => window.location.reload());
   };
 
   return (
     <div className="dashboard">
-      <h2>Estadísticas del Portfolio</h2>
-      <Bar data={chartData} />
+      <h2>Gestión del Portfolio</h2>
+      <div>
+        <input
+          name="section"
+          placeholder="Sección"
+          value={formData.section}
+          onChange={handleInputChange}
+        />
+        <textarea
+          name="content"
+          placeholder="Contenido"
+          value={formData.content}
+          onChange={handleInputChange}
+        ></textarea>
+        {editingId ? (
+          <button onClick={handleUpdate}>Actualizar</button>
+        ) : (
+          <button onClick={handleAdd}>Agregar</button>
+        )}
+      </div>
+      <ul>
+        {portfolioData.map(item => (
+          <li key={item._id}>
+            <strong>{item.section}</strong>: {JSON.stringify(item.content)}
+            <button onClick={() => handleEdit(item._id, item.section, item.content)}>Editar</button>
+            <button onClick={() => handleDelete(item._id)}>Eliminar</button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

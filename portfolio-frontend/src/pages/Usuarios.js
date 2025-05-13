@@ -13,7 +13,7 @@ function Users({ isAdmin }) {
     
     if (token) {
   
-        fetch('http://localhost:5000/users', {
+        fetch('http://localhost:5000/api/auth/users', { // Ajustar la ruta
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,

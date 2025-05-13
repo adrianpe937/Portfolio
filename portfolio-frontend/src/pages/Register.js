@@ -15,13 +15,15 @@ function Register() {
     e.preventDefault();
 
     try {
-      const res = await fetch('http://localhost:5000/register', {
+      // Ensure the API endpoint matches the backend route
+      const res = await fetch('http://localhost:5000/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form)
       });
 
       const data = await res.json();
+      console.log('Respuesta del servidor:', data); // Log para depurar
 
       if (res.ok) {
         navigate('/login');

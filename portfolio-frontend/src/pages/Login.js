@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import { jwtDecode } from 'jwt-decode';
 import '../css/Login.css'; // Importamos el CSS
 
@@ -15,7 +16,8 @@ function Login({ setUsername }) {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:5000/login', {
+      console.log('Datos enviados:', form); // Log para depurar los datos enviados
+      const res = await fetch('http://localhost:5000/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form)

@@ -1,81 +1,118 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/Portfolio.css';
 
 const Portfolio = () => {
-  const [repos, setRepos] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const username = 'adrianpe937';
+  const [portfolioData, setPortfolioData] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    const fetchRepos = async () => {
+    const fetchPortfolioData = async () => {
       try {
-        const res = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=9`);
-        const data = await res.json();
-        if (Array.isArray(data)) setRepos(data);
-      } catch (err) {
-        console.error('Error al obtener repositorios:', err);
-      } finally {
-        setLoading(false);
+        const response = await fetch('http://localhost:5000/api/portfolio');
+        if (!response.ok) throw new Error('Error al obtener los datos del portfolio');
+        const data = await response.json();
+        setPortfolioData(data);
+      } catch (error) {
+        console.error('Error al obtener los datos del portfolio:', error);
       }
     };
-    fetchRepos();
-  }, [username]);
+
+    fetchPortfolioData();
+  }, []);
+
+  const handleContentChange = async (id, newContent) => {
+    try {
+      const updatedSection = portfolioData.find((item) => item._id === id);
+      updatedSection.content = newContent;
+
+      const response = await fetch(`http://localhost:5000/api/portfolio/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedSection),
+      });
+
+      if (!response.ok) throw new Error('Error al actualizar el contenido');
+
+      setPortfolioData((prevData) =>
+        prevData.map((item) =>
+          item._id === id ? { ...item, content: newContent } : item
+        )
+      );
+    } catch (error) {
+      console.error('Error al actualizar el contenido:', error);
+    }
+  };
+
+  const handleAdd = async () => {
+    try {
+      const newSection = { section: 'Nueva Sección', content: 'Nuevo contenido...' };
+      const response = await fetch('http://localhost:5000/api/portfolio', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newSection),
+      });
+
+      if (!response.ok) throw new Error('Error al agregar una nueva sección');
+
+      const data = await response.json();
+      setPortfolioData([...portfolioData, data.data]);
+    } catch (error) {
+      console.error('Error al agregar una nueva sección:', error);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/portfolio/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) throw new Error('Error al eliminar la sección');
+
+      setPortfolioData(portfolioData.filter((item) => item._id !== id));
+    } catch (error) {
+      console.error('Error al eliminar la sección:', error);
+    }
+  };
+
+  const handleEditToggle = () => {
+    setIsEditing(!isEditing);
+  };
 
   return (
     <div className="portfolio-container">
       <header className="portfolio-header">
         <h1>Mi Portfolio</h1>
-        <p>¡Hola! Soy <strong>{username}</strong>, un desarrollador junior apasionado por la <strong>ciberseguridad</strong> y el <strong>desarrollo web</strong>.</p>
+        <p>
+          ¡Hola! Soy <strong>adrianpe937</strong>, un desarrollador junior apasionado por la <strong>ciberseguridad</strong> y el <strong>desarrollo web</strong>.
+        </p>
+        <div className="top-buttons">
+          <button onClick={handleEditToggle}>
+            {isEditing ? 'Guardar cambios' : 'Editar contenido'}
+          </button>
+          <button onClick={handleAdd}>Agregar sección</button>
+        </div>
       </header>
 
-      <section className="about-section fade-in">
-        <h2>🧑‍💻 Sobre Mí</h2>
-        <p>Soy técnico en sistemas especializado en ciberseguridad, redes y desarrollo web. Actualmente estudio el <strong>FP DAW</strong>, y tengo una base sólida en ASIX y SMX.</p>
-        <ul className="skills-list">
-          <li>🔐 Pentesting y auditorías Red Team</li>
-          <li>🖧 Automatización y administración de redes</li>
-          <li>🤖 Arduino y scripting</li>
-          <li>🧩 Backend y bases de datos</li>
-        </ul>
-
-        <div className="timeline">
-          <h3>📍 Experiencia</h3>
-          <p><strong>2024 (Ene-Jun):</strong> Prácticas en <em>Seven Sector</em></p>
-          <p><strong>2022-2023 (Nov-Mar):</strong> Prácticas en <em>Col·legi Sant Gabriel</em></p>
-        </div>
-
-        <div className="education">
-          <h3>🎓 Formación</h3>
-          <p><strong>2024 - Actual:</strong> DAW, Institut La Pineda</p>
-          <p><strong>2022 - 2024:</strong> ASIX (Ciberseguridad), Colegio Cultural Badalona</p>
-          <p><strong>2020 - 2022:</strong> SMX, Colegio Cultural Badalona</p>
-        </div>
-      </section>
-
-      <section className="fade-in">
-        <h2>🚀 Repositorios Recientes</h2>
-        {loading ? (
-          <div className="spinner" aria-label="Cargando repositorios"></div>
-        ) : (
-          <div className="repos-grid">
-            {repos.map(repo => (
-              <a
-                href={repo.html_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="repo-card"
-                key={repo.id}
-              >
-                <h3>{repo.name}</h3>
-                <p>{repo.description || 'Sin descripción'}</p>
-                <div className="repo-details">
-                  <span>⭐ {repo.stargazers_count}</span>
-                  <span>🍴 {repo.forks_count}</span>
-                </div>
-              </a>
-            ))}
+      <section className="portfolio-sections">
+        {portfolioData.map(({ _id, section, content }) => (
+          <div key={_id} className="portfolio-section">
+            <h3>{section}</h3>
+            <p
+              contentEditable={isEditing}
+              suppressContentEditableWarning={true}
+              onBlur={(e) => handleContentChange(_id, e.target.textContent)}
+              style={{ backgroundColor: isEditing ? '#f4f4f4' : 'transparent', padding: '0.3em' }}
+            >
+              {content}
+            </p>
+            {isEditing && (
+              <button className="delete-btn" onClick={() => handleDelete(_id)}>
+                Eliminar sección
+              </button>
+            )}
           </div>
-        )}
+        ))}
       </section>
     </div>
   );

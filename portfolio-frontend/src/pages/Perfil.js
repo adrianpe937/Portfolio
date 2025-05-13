@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { jwtDecode } from 'jwt-decode';
-import { useNavigate } from 'react-router-dom'; 
+import { jwtDecode } from 'jwt-decode'; // Cambiar a una exportación nombrada
+import { useNavigate } from 'react-router-dom';
 import '../css/Perfil.css';
 
 function Perfil({ handleUsernameUpdate, handleLogout }) {
@@ -18,11 +18,11 @@ function Perfil({ handleUsernameUpdate, handleLogout }) {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      const decoded = jwtDecode(token);
+      jwtDecode(token); // Decodifica el token si es necesario, pero no asigna a `decoded`
 
       const fetchUserData = async () => {
         try {
-          const response = await fetch('http://localhost:5000/get-user', {
+          const response = await fetch('http://localhost:5000/api/auth/get-user', { // Ajustar la ruta
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`,

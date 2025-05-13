@@ -1,36 +1,34 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import { jwtDecode } from 'jwt-decode';
-import '../css/Login.css'; // Importamos el CSS
+import '../css/Login.css';
 
 function Login({ setUsername }) {
   const [form, setForm] = useState({ email: '', password: '' });
   const [mensaje, setMensaje] = useState('');
   const navigate = useNavigate();
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       console.log('Datos enviados:', form); // Log para depurar los datos enviados
       const res = await fetch('http://localhost:5000/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form)
+        body: JSON.stringify(form),
       });
 
       const data = await res.json();
 
       if (res.ok) {
-        localStorage.setItem('token', data.token);
-        // Extrae el username y actualiza el estado en App.js
-        const decoded = jwtDecode(data.token);
-        setUsername(decoded.username);
-        navigate('/perfil');
+        localStorage.setItem('token', data.token); // Guarda el token en localStorage
+        const decoded = jwtDecode(data.token); // Decodifica el token
+        setUsername(decoded.username); // Actualiza el estado del nombre de usuario en AppContent
+        navigate('/perfil'); // Redirige al perfil
       } else {
         setMensaje(data.message || 'Error al iniciar sesión');
       }

@@ -13,34 +13,34 @@ import useDarkMode from './hooks/useDarkMode';
 function AppContent() {
   const [username, setUsername] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
-  const [loadingUser, setLoadingUser] = useState(true);
   const navigate = useNavigate();
   const [theme, toggleTheme] = useDarkMode();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token'); // Obtén el token del localStorage
     if (token) {
       try {
-        const decoded = jwtDecode(token);
-        setUsername(decoded.username);
-        setIsAdmin(decoded.isAdmin);
+        const decoded = jwtDecode(token); // Decodifica el token correctamente
+        console.log('Token decodificado:', decoded); // Log para depurar
+        setUsername(decoded.username); // Actualiza el estado del nombre de usuario
+        setIsAdmin(decoded.isAdmin); // Actualiza el estado de administrador
       } catch (error) {
+        console.error('Error al decodificar el token:', error);
         setUsername('');
         setIsAdmin(false);
       }
     }
-    setLoadingUser(false);
-  }, []);
+  }, []); // Este efecto se ejecuta solo una vez al montar el componente
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    setUsername('');
-    setIsAdmin(false);
-    navigate('/login');
+    localStorage.removeItem('token'); // Elimina el token del localStorage
+    setUsername(''); // Limpia el estado del nombre de usuario
+    setIsAdmin(false); // Limpia el estado de administrador
+    navigate('/login'); // Redirige al login
   };
 
   const handleUsernameUpdate = (newUsername) => {
-    setUsername(newUsername);
+    setUsername(newUsername); // Actualiza el estado del nombre de usuario
   };
 
   return (
@@ -56,7 +56,7 @@ function AppContent() {
           {username && <Link to="/dashboard">Dashboard</Link>}
         </div>
 
-        {username && <span className="user-info">{username}</span>}
+        {username && <span className="user-info">Bienvenido, {username}</span>} {/* Muestra el nombre del usuario */}
 
         <div className="nav-right">
           <button onClick={toggleTheme}>

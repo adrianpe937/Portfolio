@@ -65,10 +65,15 @@ exports.loginUser = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user._id, isAdmin: user.isAdmin },
+      {
+        id: user._id,
+        username: user.username, // <-- AÑADE ESTA LÍNEA
+        isAdmin: user.isAdmin
+      },
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
+    
 
     res.status(200).json({ message: 'Inicio de sesión exitoso', token });
   } catch (error) {

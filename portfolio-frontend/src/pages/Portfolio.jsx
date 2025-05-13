@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 import '../css/Portfolio.css';
 import {
   FaCode,
@@ -25,6 +27,7 @@ const Portfolio = () => {
   // =======================
   useEffect(() => {
     const fetchPortfolioData = async () => {
+      AOS.init({ duration: 1000 });
       try {
         const response = await fetch('http://localhost:5000/api/portfolio', {
           headers: {
@@ -56,6 +59,164 @@ const Portfolio = () => {
     if (lower.includes('desarrollo') || lower.includes('web')) return <FaLaptopCode className="section-icon" />;
     return <FaCode className="section-icon" />;
   };
+
+
+  const renderEditableContent = (section, content, _id) => {
+  if (typeof content === 'string') {
+    return (
+      <p
+        className={`section-content ${isEditing ? 'editing' : ''}`}
+        contentEditable={isEditing}
+        suppressContentEditableWarning={true}
+        onBlur={(e) => handleContentChange(_id, e.target.textContent)}
+      >
+        {content}
+      </p>
+    );
+  }
+
+  if (Array.isArray(content)) {
+    // Experiencia
+    if (section === 'Experiencia') {
+      return content.map((item, idx) => (
+        <div key={idx} className="experience-block">
+          <h4
+            contentEditable={isEditing}
+            suppressContentEditableWarning={true}
+            onBlur={(e) => handleNestedContentChange(_id, idx, 'titulo', e.target.textContent)}
+          >
+            {item.titulo}
+          </h4>
+          <p
+            className="experience-date"
+            contentEditable={isEditing}
+            suppressContentEditableWarning={true}
+            onBlur={(e) => handleNestedContentChange(_id, idx, 'fecha', e.target.textContent)}
+          >
+            {item.fecha}
+          </p>
+          <ul>
+            {item.descripcion.map((desc, i) => (
+              <li
+                key={i}
+                contentEditable={isEditing}
+                suppressContentEditableWarning={true}
+                onBlur={(e) =>
+                  handleNestedDescriptionChange(_id, idx, i, e.target.textContent)
+                }
+              >
+                {desc}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ));
+    }
+
+    // Formación
+    if (section === 'Formación') {
+      return content.map((item, idx) => (
+        <div key={idx} className="formacion-block">
+          <h4
+            contentEditable={isEditing}
+            suppressContentEditableWarning={true}
+            onBlur={(e) => handleNestedContentChange(_id, idx, 'titulo', e.target.textContent)}
+          >
+            {item.titulo}
+          </h4>
+          <p
+            contentEditable={isEditing}
+            suppressContentEditableWarning={true}
+            onBlur={(e) => handleNestedContentChange(_id, idx, 'fecha', e.target.textContent)}
+          >
+            {item.fecha}
+          </p>
+          <p
+            contentEditable={isEditing}
+            suppressContentEditableWarning={true}
+            onBlur={(e) =>
+              handleNestedContentChange(_id, idx, 'descripcion', e.target.textContent)
+            }
+          >
+            {item.descripcion}
+          </p>
+        </div>
+      ));
+    }
+
+    // Idiomas
+    if (section === 'Idiomas') {
+      return (
+        <ul>
+          {content.map((idioma, idx) => (
+            <li key={idx}>
+              <strong
+                contentEditable={isEditing}
+                suppressContentEditableWarning={true}
+                onBlur={(e) =>
+                  handleNestedContentChange(_id, idx, 'idioma', e.target.textContent)
+                }
+              >
+                {idioma.idioma}
+              </strong>
+              :{" "}
+              <span
+                contentEditable={isEditing}
+                suppressContentEditableWarning={true}
+                onBlur={(e) =>
+                  handleNestedContentChange(_id, idx, 'nivel', e.target.textContent)
+                }
+              >
+                {idioma.nivel}
+              </span>
+            </li>
+          ))}
+        </ul>
+      );
+    }
+  }
+
+  return null;
+};
+
+
+
+//CONTENIDO ANINADO/////////////////
+
+const handleNestedContentChange = (id, index, field, newValue) => {
+  setPortfolioData((prevData) =>
+    prevData.map((item) => {
+      if (item._id === id) {
+        const newContent = [...item.content];
+        newContent[index] = {
+          ...newContent[index],
+          [field]: newValue,
+        };
+        return { ...item, content: newContent };
+      }
+      return item;
+    })
+  );
+};
+
+const handleNestedDescriptionChange = (id, itemIndex, descIndex, newValue) => {
+  setPortfolioData((prevData) =>
+    prevData.map((item) => {
+      if (item._id === id) {
+        const newContent = [...item.content];
+        const newDesc = [...newContent[itemIndex].descripcion];
+        newDesc[descIndex] = newValue;
+        newContent[itemIndex] = {
+          ...newContent[itemIndex],
+          descripcion: newDesc,
+        };
+        return { ...item, content: newContent };
+      }
+      return item;
+    })
+  );
+};
+
 
   // =======================
   // Handlers
@@ -164,17 +325,6 @@ const Portfolio = () => {
               <div key={skill} className="skill-tag">{skill}</div>
             ))}
           </div>
-
-          <div className="top-buttons">
-            <button className="edit-button" onClick={handleEditToggle}>
-              <FaEdit className="button-icon" />
-              {isEditing ? 'Guardar cambios' : 'Editar contenido'}
-            </button>
-            <button className="add-button" onClick={handleAdd}>
-              <FaPlus className="button-icon" />
-              Agregar sección
-            </button>
-          </div>
         </div>
       </header>
 
@@ -194,38 +344,72 @@ const Portfolio = () => {
       </div>
 
       {/* Secciones dinámicas de experiencia */}
-      <section>
+     <section data-aos="fade-up">
         <h2 className="section-title">Mi Experiencia</h2>
+
+        <div className="top-buttons">
+          <button className="edit-button" onClick={handleEditToggle}>
+            <FaEdit className="button-icon" />
+            {isEditing ? 'Guardar cambios' : 'Editar contenido'}
+          </button>
+          <button className="add-button" onClick={handleAdd}>
+            <FaPlus className="button-icon" />
+            Agregar sección
+          </button>
+        </div>
+
         {error ? (
-          <p className="error-message">{error}</p> // Mostrar mensaje de error
+          <p className="error-message">{error}</p>
         ) : portfolioData.length > 0 ? (
-          portfolioData.map(({ _id, section, content, index }) => (
-            <div >
-              <div>
-                {getSectionIcon(section)}
-                <h3>{section}</h3>
-              </div>
-              <div className="section-content-wrapper">
-                <p
-                  className={`section-content ${isEditing ? 'editing' : ''}`}
-                  contentEditable={isEditing}
-                  suppressContentEditableWarning={true}
-                  onBlur={(e) => handleContentChange(_id, e.target.textContent)}
-                >
-                  {content}
-                </p>
-                {isEditing && (
-                  <button className="delete-btn" onClick={() => handleDelete(_id)}>
-                    <FaTrash className="button-icon" /> Eliminar
-                  </button>
+          portfolioData.map(({ _id, section, content, index, imageUrl }, i) => (
+            <div
+              className="experience-card"
+              key={_id}
+              data-aos="fade-up"
+              data-aos-delay={i * 100}
+              style={{ "--i": i }}
+            >
+              {/* Contenedor para imagen */}
+              <div className="experience-image">
+                {imageUrl ? (
+                  <img src={imageUrl} alt={section} />
+                ) : (
+                  <div className="experience-image-placeholder">
+                    {section.charAt(0)}
+                  </div>
                 )}
+              </div>
+
+              <div className="experience-content">
+                <div className="experience-header">
+                  <div className="experience-icon">
+                    {getSectionIcon(section)}
+                  </div>
+                  <h3 className="experience-title">{section}</h3>
+                </div>
+
+                <div className="section-content-wrapper">
+                  {renderEditableContent(section, content, _id)}
+
+                  {isEditing && (
+                    <div className="experience-actions">
+                      <button className="delete-btn" onClick={() => handleDelete(_id)}>
+                        <FaTrash className="button-icon" /> Eliminar
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           ))
         ) : (
-          <p>Cargando datos del portfolio...</p>
+          <div className="loading-state" data-aos="fade-up">
+            <div className="loading-spinner"></div>
+            <p>Cargando datos del portfolio...</p>
+          </div>
         )}
       </section>
+
 
       {/* Proyectos destacados */}
       <h2 className="section-title">Proyectos Destacados</h2>
@@ -234,7 +418,7 @@ const Portfolio = () => {
           {
             title: "Web de Pilates",
             link: "https://mars-studio.es/",
-            techs: ["HTML", "CSS", "JavaScript"],
+            techs: ["Wordpress", "CSS", "JavaScript"],
             desc: "Diseño y desarrollo de un sitio web para un estudio de pilates",
             classImage: "project-image"
           },

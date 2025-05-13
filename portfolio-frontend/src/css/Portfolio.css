@@ -469,12 +469,31 @@ body.dark-mode {
 .top-buttons {
   display: flex;
   gap: 1rem;
-  margin-top: 1.5rem;
-  animation: slideUpFade 0.8s var(--transition-timing) forwards;
-  animation-delay: 0.5s;
-  opacity: 0;
-  transform: translateY(20px);
+  margin-bottom: 2rem;
+  justify-content: flex-end;
 }
+
+.edit-button,
+.add-button {
+  padding: 0.6rem 1.4rem;
+  border-radius: 30px;
+  border: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: linear-gradient(135deg, #6A3DE8, #38B2AC);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.edit-button:hover,
+.add-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
 
 /* --------------------- */
 /* FEATURES GRID */
@@ -642,15 +661,6 @@ body.dark-mode {
 
 .section-content-wrapper {
   position: relative;
-}
-
-.section-content {
-  font-size: 1.1rem;
-  line-height: 1.8;
-  color: var(--text-color);
-  transition: background-color 0.3s var(--transition-timing);
-  border-radius: var(--border-radius-sm);
-  padding: 1rem;
 }
 
 .section-content.editing {
@@ -912,10 +922,356 @@ body.dark-mode {
   transition: opacity 0.4s var(--transition-timing);
 }
 
+/* MI EXPERIENECIA*/
+
+/* Estilos mejorados para la sección de experiencia basados en el estilo general */
+section {
+  padding: 3rem;
+  border-radius: var(--border-radius-lg);
+  background: var(--card-bg);
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--card-border);
+  transition: background-color 0.6s var(--transition-timing), 
+              box-shadow 0.6s var(--transition-timing), 
+              border-color 0.6s var(--transition-timing), 
+              transform 0.4s var(--transition-timing);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 3rem;
+}
+
+section:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+/* Añadiendo el borde decorativo lateral como en tu estilo general */
+section:nth-child(odd) {
+  border-left: 5px solid var(--primary-color);
+}
+
+section:nth-child(even) {
+  border-right: 5px solid var(--secondary-color);
+}
+
+/* Efecto visual con gradiente */
+section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(var(--primary-color), 0.05) 0%, rgba(var(--primary-color), 0) 70%);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.section-title {
+  font-size: 2.8rem;
+  color: var(--secondary-color);
+  margin-bottom: 2.5rem;
+  position: relative;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 80px;
+  height: 4px;
+  background: var(--primary-gradient);
+  border-radius: 2px;
+}
+
+.error-message {
+  background-color: rgba(var(--danger-color), 0.1);
+  color: var(--danger-color);
+  padding: 1rem 1.5rem;
+  border-radius: var(--border-radius-sm);
+  border-left: 4px solid var(--danger-color);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.error-message::before {
+  content: "!";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background-color: var(--danger-color);
+  color: white;
+  border-radius: 50%;
+  margin-right: 12px;
+  font-weight: bold;
+}
+
+/* Tarjetas de experiencia */
+.experience-card {
+  margin-bottom: 3rem;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(to bottom right, #2A2B38, #1E1F26);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
 
 
-/*
+.experience-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+/* Contenedor para imagen */
+.experience-image {
+  flex: 0 0 240px;
+  position: relative;
+  overflow: hidden;
+}
+
+.experience-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s var(--transition-timing);
+}
+
+.experience-card:hover .experience-image img {
+  transform: scale(1.1);
+}
+
+/* Overlay para la imagen */
+.experience-image::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(106, 61, 232, 0.2), rgba(56, 178, 172, 0.2));
+  opacity: 0;
+  transition: opacity 0.4s var(--transition-timing);
+}
+
+.experience-card:hover .experience-image::after {
+  opacity: 1;
+}
+
+/* Icono alternativo cuando no hay imagen */
+.experience-image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #6A3DE8, #38B2AC);
+  font-size: 4rem;
+  color: white;
+  font-weight: 600;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Contenido de la tarjeta */
+.experience-content {
+  flex: 1;
+  padding: 2rem;
+  position: relative;
+}
+
+.experience-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.experience-icon {
+  width: 60px;
+  height: 60px;
+  background: rgba(106, 61, 232, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  transition: all 0.3s ease-in-out;
+}
+
+.experience-card:hover .experience-icon {
+   transform: rotate(10deg) scale(1.15);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.experience-icon svg {
+  font-size: 1.8rem;
+  color: var(--primary-color);
+}
 
 
 
-*/
+
+.section-content {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: #EDEDED;
+  margin-top: 0.5rem;
+}
+
+.experience-title {
+  font-size: 1.6rem;
+  color: #ffffff;
+  margin-bottom: 0.3rem;
+}
+
+.section-content-wrapper {
+  position: relative;
+  margin-top: 1rem;
+}
+
+.section-content-wrapper ul,
+.section-content-wrapper ol {
+  margin: 0.8rem 0;
+  padding-left: 1.5rem;
+}
+
+.section-content-wrapper li {
+  margin-bottom: 0.4rem;
+  list-style-type: disc;
+}
+
+
+
+.section-content.editing {
+  background-color: rgba(106, 61, 232, 0.05);
+  box-shadow: inset 0 0 0 1px rgba(106, 61, 232, 0.1);
+  padding: 1.5rem;
+  border-radius: var(--border-radius-sm);
+  min-height: 120px;
+}
+
+/* Acciones */
+.experience-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.delete-btn {
+  background: transparent;
+  color: var(--danger-color);
+  border: 1px solid var(--danger-color);
+}
+
+.delete-btn:hover {
+  background: var(--danger-color);
+  color: white;
+}
+
+
+.button-icon {
+  font-size: 1rem;
+}
+
+/* Estado de carga con animación */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.loading-state p {
+  font-size: 1.2rem;
+  color: var(--light-text-color);
+  margin-top: 1.5rem;
+  font-style: italic;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(var(--primary-color), 0.1);
+  border-radius: 50%;
+  border-top-color: var(--primary-color);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Efecto de aparición para cada tarjeta */
+.experience-card {
+  animation: slideUpFade 0.8s var(--transition-timing) forwards;
+  opacity: 0;
+  transform: translateY(30px);
+  animation-delay: calc(var(--i, 0) * 0.15s);
+}
+
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+  .experience-card {
+    flex-direction: column;
+  }
+  
+  .experience-image {
+    flex: 0 0 180px;
+    width: 100%;
+  }
+  
+  .section-title {
+    font-size: 2.2rem;
+  }
+}
+
+/* Animaciones de aparición */
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .experience-content {
+    padding: 1.5rem;
+  }
+
+  .experience-image-placeholder {
+    font-size: 2.5rem;
+  }
+
+  .experience-title {
+    font-size: 1.4rem;
+  }
+
+  .edit-button,
+  .add-button {
+    font-size: 0.85rem;
+    padding: 0.5rem 1.2rem;
+  }
+}

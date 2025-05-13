@@ -5,4 +5,5 @@ const portfolioSchema = new mongoose.Schema({
   content: { type: String, required: true },
 });
 
-module.exports = mongoose.model('Portfolio', portfolioSchema, 'portfolio'); // Explicitly use the "portfolio" collection
+module.exports = mongoose.model('Portfolio', portfolioSchema, 'portfolios');
+

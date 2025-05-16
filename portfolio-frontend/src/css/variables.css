@@ -1,35 +1,34 @@
 :root {
-  /* Variables existentes */
-  --bg-color: #ffffff;
-  --text-color: #000000;
+  /* Paleta mejorada para modo claro */
+  --bg-color: #f6f8fa;
+  --text-color: #23272f;
   --card-bg: #ffffff;
-  --card-text: #000000;
-  --nav-bg: #f4f4f4;
-  --nav-link: #000000;
-  --nav-link-hover: #00bcd4;
-  --button-bg: #4caf50;
-  --button-hover: #388e3c;
-  --repo-title: #3182ce;
+  --card-text: #23272f;
+  --nav-bg: #f8fafc;
+  --nav-link: #23272f;
+  --nav-link-hover: #3b82f6;
+  --button-bg: #6a3de8;
+  --button-hover: #5429d0;
+  --repo-title: #3b82f6;
   --table-header-bg: #f1f5f9;
-  --table-text: #333;
-  --edit-border: #2196f3;
-  --save-border: #4caf50;
-  --logout-border: #f44336;
-  --nav-bg: #f4f4f4;
-  --nav-link: #000000;
-  --nav-link-hover: #00bcd4;
-  --button-dark-bg: #000;
-  --button-dark-hover: #111;
-  --table-bg: #ffffff;
-  --table-border: #ddd;
-  
-  /* Nuevas variables para mejoras de transición */
-  --text-color-light: #666666;
-  --primary-color: #4caf50;
-  --primary-color-hover: #388e3c;
-  --primary-color-rgb: 76, 175, 80; /* RGB del color primario para transparencias */
-  --secondary-color: #2196f3;
-  --card-border: rgba(0, 0, 0, 0.1);
+  --table-text: #23272f;
+  --edit-border: #3b82f6;
+  --save-border: #22c55e;
+  --logout-border: #ef4444;
+  --button-dark-bg: #23272f;
+  --button-dark-hover: #111827;
+  --table-bg: #f9fafb;
+  --table-border: #e5e7eb;
+
+  /* Mejoras visuales */
+  --text-color-light: #6b7280;
+  --primary-color: #6a3de8;
+  --primary-color-hover: #5429d0;
+  --primary-color-light: #a78bfa;
+  --primary-color-rgb: 106, 61, 232;
+  --secondary-color: #38b2ac;
+  --secondary-color-light: #67e8f9;
+  --card-border: rgba(106, 61, 232, 0.08);
 }
 
 body.dark {

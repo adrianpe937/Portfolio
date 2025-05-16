@@ -46,11 +46,31 @@
   border: 2px solid #e53e3e;
 }
 
-.experience-image { /* ... */ }
-.experience-content { /* ... */ }
-.experience-header { /* ... */ }
+.experience-image {
+  flex: 0 0 240px;
+  position: relative;
+  overflow: hidden;
+}
+
+.experience-content {
+  flex: 1;
+  padding: 2rem;
+  position: relative;
+}
+
+.experience-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.experience-title {
+  font-size: 1.6rem;
+  color: #fff;
+  margin-bottom: 0.3rem;
+}
+
 .experience-icon { /* ... */ }
-.experience-title { /* ... */ }
 .section-content-wrapper { /* ... */ }
 .section-content { /* ... */ }
 .experience-actions { /* ... */ }
@@ -119,6 +139,31 @@
   color: #fff;
   box-shadow: 0 6px 18px rgba(229, 62, 62, 0.18);
   transform: translateY(-2px) scale(1.04);
+}
+
+section {
+  padding: 3rem;
+  border-radius: var(--border-radius-lg);
+  background: var(--card-bg);
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--card-border);
+  transition: background-color 0.6s var(--transition-timing), 
+              box-shadow 0.6s var(--transition-timing), 
+              border-color 0.6s var(--transition-timing), 
+              transform 0.4s var(--transition-timing);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 3rem;
+}
+section:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--card-shadow-hover);
+}
+section:nth-child(odd) {
+  border-left: 5px solid var(--primary-color);
+}
+section:nth-child(even) {
+  border-right: 5px solid var(--secondary-color);
 }
 
 /* ...drag and drop, animaciones, media queries de experiencia... */

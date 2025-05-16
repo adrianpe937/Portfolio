@@ -11,8 +11,7 @@
   padding: 2.5rem 2rem;
   text-align: center;
   box-shadow: var(--card-shadow);
-  transition: transform 0.4s var(--transition-timing),
-              box-shadow 0.4s var(--transition-timing);
+  transition: transform 0.4s, box-shadow 0.4s;
   position: relative;
   overflow: hidden;
   z-index: 1;
@@ -30,7 +29,7 @@
   color: white;
   font-size: 2rem;
   transform: rotate(-5deg);
-  transition: transform 0.4s var(--transition-timing);
+  transition: transform 0.4s;
   box-shadow: 0 10px 20px rgba(106, 61, 232, 0.2);
 }
 

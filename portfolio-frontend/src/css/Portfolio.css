@@ -1749,7 +1749,7 @@ section::before {
 }
 
 .blog-card {
-  background: var(--card-bg);
+  background: var (--card-bg);
   border-radius: var(--border-radius-md);
   overflow: hidden;
   box-shadow: var(--card-shadow);

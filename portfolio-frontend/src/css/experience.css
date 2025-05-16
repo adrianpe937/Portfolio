@@ -1,0 +1,124 @@
+.mi-experiencia-section {
+  max-width: 1800px;
+  margin: 0 auto 3rem auto;
+  padding: 3rem 1rem;
+  background: var(--card-bg);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--card-border);
+  position: relative;
+  overflow: visible;
+}
+
+.mi-experiencia-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5rem;
+  max-width: 1200px;
+  margin: 0 auto 3rem auto;
+}
+
+@media (max-width: 900px) {
+  .mi-experiencia-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    max-width: 100vw;
+  }
+}
+
+.experience-card {
+  margin-bottom: 3rem;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(to bottom right, #2A2B38, #1E1F26);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: grab;
+  transition: transform 0.18s cubic-bezier(.4,2,.6,1), opacity 0.18s;
+  animation: slideUpFade 0.8s var(--transition-timing) forwards;
+  opacity: 0;
+  transform: translateY(30px);
+  animation-delay: calc(var(--i, 0) * 0.15s);
+}
+
+.experience-card.selected-card {
+  box-shadow: 0 0 0 4px #e53e3e, var(--card-shadow);
+  border: 2px solid #e53e3e;
+}
+
+.experience-image { /* ... */ }
+.experience-content { /* ... */ }
+.experience-header { /* ... */ }
+.experience-icon { /* ... */ }
+.experience-title { /* ... */ }
+.section-content-wrapper { /* ... */ }
+.section-content { /* ... */ }
+.experience-actions { /* ... */ }
+.delete-btn { 
+  background: linear-gradient(135deg, var(--danger-color), var(--danger-color-dark));
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  padding: 0.6rem 1.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  box-shadow: 0 4px 12px rgba(229, 62, 62, 0.10);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
+  outline: none;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.delete-btn:hover,
+.delete-btn:focus {
+  background: linear-gradient(135deg, #c53030, #e53e3e 80%);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(229, 62, 62, 0.18);
+  transform: translateY(-2px) scale(1.04);
+}
+
+.delete-btn .button-icon {
+  font-size: 1.1rem;
+  margin-right: 0.3rem;
+}
+
+/* Ajuste para el botón Eliminar todo para que NO quede debajo de las tarjetas */
+.mi-experiencia-section > .delete-todo-btn-row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  margin-top: -1.2rem;
+  gap: 1rem;
+}
+
+/* Si quieres que el botón esté alineado con los otros botones, puedes quitar el margin-top negativo */
+.delete-todo-btn-row .delete-btn {
+  background: linear-gradient(135deg, var(--danger-color), var(--danger-color-dark));
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  padding: 0.6rem 1.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  box-shadow: 0 4px 12px rgba(229, 62, 62, 0.10);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
+  outline: none;
+  margin: 0;
+}
+
+.delete-todo-btn-row .delete-btn:hover,
+.delete-todo-btn-row .delete-btn:focus {
+  background: linear-gradient(135deg, #c53030, #e53e3e 80%);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(229, 62, 62, 0.18);
+  transform: translateY(-2px) scale(1.04);
+}
+
+/* ...drag and drop, animaciones, media queries de experiencia... */

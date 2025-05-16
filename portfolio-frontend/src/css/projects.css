@@ -1,0 +1,25 @@
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2.5rem;
+  margin: 3rem 0;
+}
+
+.project-card {
+  background: var(--card-bg);
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.4s var(--transition-timing),
+              box-shadow 0.4s var(--transition-timing);
+  position: relative;
+  height: 380px;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-image { /* ... */ }
+.project-overlay { /* ... */ }
+.project-info { /* ... */ }
+.project-tech { /* ... */ }
+/* ...otros estilos de proyectos... */

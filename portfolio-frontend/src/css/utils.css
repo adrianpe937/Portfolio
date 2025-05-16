@@ -1,0 +1,17 @@
+/* Utilidades, animaciones, media queries generales, scrollbars, etc. */
+/* Animaciones */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slideUpFade {
+  from { opacity: 0; transform: translateY(30px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+@keyframes aparecer { /* ...copia aquí SOLO animaciones globales, utilidades, helpers, .reveal, media queries generales, custom scrollbar, etc... */ }
+@keyframes deslizarArribaDesvanecer { /* ...copia aquí SOLO animaciones globales, utilidades, helpers, .reveal, media queries generales, custom scrollbar, etc... */ }
+/* ...otros keyframes, utilidades, helpers, reveal, etc... */
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar { /* ...copia aquí SOLO animaciones globales, utilidades, helpers, .reveal, media queries generales, custom scrollbar, etc... */ }
+/* ...otros estilos utilitarios... */

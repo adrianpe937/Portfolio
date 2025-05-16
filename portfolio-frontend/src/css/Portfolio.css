@@ -675,7 +675,6 @@ body.dark-mode {
 }
 
 .delete-btn {
-  position: absolute;
   bottom: -2.5rem;
   right: 0;
   background: linear-gradient(135deg, var(--danger-color), var(--danger-color-dark));
@@ -2150,3 +2149,27 @@ section::before {
   box-shadow: 0 0 0 4px #e53e3e, var(--card-shadow);
   border: 2px solid #e53e3e;
 }
+
+/* === LAYOUT === */
+@import './layout.css';
+
+/* === HERO === */
+@import './hero.css';
+
+/* === HEADER === */
+@import './header.css';
+
+/* === FEATURES === */
+@import './features.css';
+
+/* === EXPERIENCE === */
+@import './experience.css';
+
+/* === PROJECTS === */
+@import './projects.css';
+
+/* === CONTACT === */
+@import './contact.css';
+
+/* === UTILS, ANIMATIONS, MEDIA === */
+@import './utils.css';

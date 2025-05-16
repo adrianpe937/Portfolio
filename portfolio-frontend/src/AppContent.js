@@ -47,13 +47,19 @@ function AppContent() {
     <>
       <nav>
         <div className="nav-links">
+          {/* Enlaces internos a secciones del portfolio */}
+          <a href="/portfolio#about" className="nav-link">Acerca de mí</a>
+          <a href="/portfolio#experience" className="nav-link">Mi experiencia</a>
+          <a href="/portfolio#projects" className="nav-link">Proyectos Destacados</a>
+          <a href="/portfolio#contact" className="nav-link">Contacto</a>
+          {/* Enlaces de navegación generales */}
           {!username && <Link to="/register">Registro</Link>}
           {!username && <Link to="/login">Login</Link>}
           {isAdmin && <Link to="/usuarios">Usuarios</Link>}
           <Link to="/portfolio">Portfolio</Link>
-          <Link to="/alerta-empleo">Alerta de Empleo</Link>
+          {/* <Link to="/alerta-empleo">Alerta de Empleo</Link> */}
           {username && <Link to="/perfil">Perfil</Link>}
-          {username && <Link to="/dashboard">Dashboard</Link>}
+          {/* {username && <Link to="/dashboard">Dashboard</Link>} */}
         </div>
 
         {username && <span className="user-info">Bienvenido, {username}</span>} {/* Muestra el nombre del usuario */}
@@ -80,12 +86,12 @@ function AppContent() {
         <Route path="/login" element={<Login setUsername={setUsername} />} />
         <Route path="/usuarios" element={<Users isAdmin={isAdmin} />} />
         <Route path="/portfolio" element={<Portfolio />} />
-        <Route path="/alerta-empleo" element={<AlertaEmpleo />} />
+        {/* <Route path="/alerta-empleo" element={<AlertaEmpleo />} /> */}
         <Route
           path="/perfil"
           element={<Perfil handleLogout={handleLogout} handleUsernameUpdate={handleUsernameUpdate} />}
         />
-        <Route path="/dashboard" element={<Dashboard />} />
+        {/* <Route path="/dashboard" element={<Dashboard />} /> */}
       </Routes>
     </>
   );

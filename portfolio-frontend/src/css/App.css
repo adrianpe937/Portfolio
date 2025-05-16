@@ -121,3 +121,45 @@ body.dark .logoutButton {
   border: 2px solid #d32f2f;
   color: #fff;
 }
+
+.portfolio-navbar {
+  background: var(--nav-bg, #fff);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-left, .nav-right {
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+}
+
+.nav-link {
+  color: var(--nav-link, #23272f);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.nav-link:hover {
+  background: var(--primary-gradient, #f3f3f3);
+  color: var(--primary-color, #6a3de8);
+}
+
+.user-info {
+  color: var(--primary-color, #6a3de8);
+  font-weight: 600;
+  background: var(--card-bg, #fff);
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px var(--card-border, #eee);
+}

@@ -120,6 +120,11 @@ strong {
   color: var(--primary-color);
 }
 
+/* Scroll suave global (por si el navegador no soporta scroll-behavior en JS) */
+html {
+  scroll-behavior: smooth;
+}
+
 /* --------------------- */
 /* CONTENEDOR PRINCIPAL */
 /* --------------------- */
@@ -318,6 +323,40 @@ body.dark-mode {
   height: 40px;
   color: white;
   animation: bounce 2s infinite;
+}
+
+/* Botón/enlace para bajar a Acerca de mí */
+.scroll-down-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2.5rem;
+  font-size: 1.2rem;
+  color: #fff;
+  background: rgba(106, 61, 232, 0.7);
+  padding: 0.7rem 1.5rem;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(106, 61, 232, 0.18);
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+  animation: fadeInUp 1.2s 1.2s both;
+}
+.scroll-down-link:hover {
+  background: var(--primary-gradient);
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 8px 24px rgba(106, 61, 232, 0.25);
+  color: #fff;
+}
+.scroll-down-arrow {
+  font-size: 1.5rem;
+  line-height: 1;
+  animation: bounce 2s infinite;
+}
+.scroll-down-text {
+  font-size: 1.1rem;
+  font-weight: 500;
 }
 
 /* --------------------- */
@@ -2183,3 +2222,15 @@ section::before {
 
 /* === UTILS, ANIMATIONS, MEDIA === */
 @import './utils.css';
+
+/* Fade-in para la sección Acerca de mí */
+.about-section {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(.23,1,.32,1), transform 0.8s cubic-bezier(.23,1,.32,1);
+  will-change: opacity, transform;
+}
+.about-section[data-aos="fade-up"].aos-animate {
+  opacity: 1;
+  transform: translateY(0);
+}

@@ -4,6 +4,17 @@ import { FaExternalLinkAlt, FaInfoCircle } from "react-icons/fa";
 // Cambia esto por tu usuario real de GitHub si es diferente
 const GITHUB_USERNAME = "adrianpe937";
 
+// Asocia aquí el nombre del repo con la imagen que quieras mostrar
+const projectImages = {
+  "portfolio": "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80",
+  "ciberseguridad": "https://images.unsplash.com/photo-1510511459019-5dda7724fd87?auto=format&fit=crop&w=600&q=80",
+  "web-app": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=600&q=80",
+  // Añade aquí más repos y sus imágenes personalizadas
+};
+
+// Imagen por defecto si no hay personalizada
+const defaultProjectImage = "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80";
+
 const marsStudioProject = {
   title: "Web de Pilates",
   link: "https://mars-studio.es/",
@@ -26,7 +37,6 @@ const Projects = () => {
         return res.json();
       })
       .then(data => {
-        // Opcional: filtra forks y ordena por estrellas si quieres
         const filtered = data.filter(repo => !repo.fork);
         setGithubProjects(filtered);
         setLoading(false);
@@ -39,6 +49,17 @@ const Projects = () => {
 
   const handleFlip = idx => {
     setFlipped(f => ({ ...f, [idx]: !f[idx] }));
+  };
+
+  // Helper para obtener la imagen del proyecto
+  const getProjectImage = (repo) => {
+    // Busca por nombre exacto o por slug (sin espacios, minúsculas)
+    const key = repo.name.toLowerCase().replace(/\s+/g, "-");
+    return (
+      projectImages[repo.name] ||
+      projectImages[key] ||
+      defaultProjectImage
+    );
   };
 
   return (
@@ -64,15 +85,16 @@ const Projects = () => {
             <div className="flip-card-inner">
               {/* Front */}
               <div className="flip-card-front">
-                <div className="project-image" style={{
-                  backgroundImage: repo.owner?.avatar_url
-                    ? `url(${repo.owner.avatar_url})`
-                    : undefined,
-                  backgroundSize: "30%",
-                  backgroundRepeat: "no-repeat",
-                  backgroundPosition: "center",
-                  height: "200px"
-                }}>
+                <div
+                  className="project-image"
+                  style={{
+                    backgroundImage: `url(${getProjectImage(repo)})`,
+                    backgroundSize: "cover",
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "center",
+                    height: "200px"
+                  }}
+                >
                   <div className="project-overlay">
                     <h4>{repo.name}</h4>
                     <a href={repo.html_url} target="_blank" rel="noopener noreferrer" className="project-link">

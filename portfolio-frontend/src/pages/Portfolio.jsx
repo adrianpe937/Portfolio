@@ -63,9 +63,6 @@ const Portfolio = () => {
       {/* Sección Acerca de mí */}
       <section id="about" className="about-section" data-aos="fade-up">
         <div className="portfolio-header">
-          <div className="avatar-container">
-            <div className="avatar-placeholder">AP</div>
-          </div>
           <div className="header-content">
             <h2>Acerca de mí</h2>
             <p className="bio">

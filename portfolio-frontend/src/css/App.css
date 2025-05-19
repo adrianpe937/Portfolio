@@ -150,11 +150,6 @@ body.dark .logoutButton {
   transition: background 0.2s, color 0.2s;
 }
 
-.nav-link:hover {
-  background: var(--primary-gradient, #f3f3f3);
-  color: var(--primary-color, #6a3de8);
-}
-
 .user-info {
   color: var(--primary-color, #6a3de8);
   font-weight: 600;

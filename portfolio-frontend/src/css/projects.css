@@ -1,6 +1,6 @@
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
   gap: 2.5rem;
   margin: 3rem 0;
   overflow: visible;
@@ -14,17 +14,443 @@
   transition: transform 0.4s var(--transition-timing),
               box-shadow 0.4s var(--transition-timing);
   position: relative;
-  height: 380px;
+  min-height: 480px;
+  height: auto;
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
+  /* Mejora visual para móvil */
+  border: none;
 }
 
-.project-image { /* ... */ }
-.project-overlay { /* ... */ }
-.project-info { /* ... */ }
-.project-tech { /* ... */ }
-/* ...otros estilos de proyectos... */
+/* Mejora visual para la imagen de proyecto/experiencia */
+.project-image,
+.experience-image {
+  width: 100%;
+  height: 260px !important;
+  border-radius: 18px 18px 0 0;
+  overflow: hidden;
+  background: #eee;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: relative;
+  box-shadow: 0 6px 24px rgba(106,61,232,0.10);
+  transition: box-shadow 0.3s;
+}
 
+.project-card:hover .project-image,
+.project-card:hover .experience-image {
+  box-shadow: 0 12px 32px rgba(106,61,232,0.18);
+}
+
+.project-image img,
+.experience-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 18px 18px 0 0;
+  transition: transform 0.35s cubic-bezier(.23,1,.32,1);
+}
+
+.project-card:hover .project-image img,
+.project-card:hover .experience-image img {
+  transform: scale(1.04);
+}
+
+/* Botón de editar imagen */
+.project-card label[title="Cambiar imagen"],
+.experience-image label[title="Cambiar imagen"] {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: rgba(30,30,30,0.75);
+  border-radius: 50%;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  transition: background 0.2s, transform 0.2s;
+}
+.project-card label[title="Cambiar imagen"]:hover,
+.experience-image label[title="Cambiar imagen"]:hover {
+  background: rgba(106,61,232,0.85);
+  transform: scale(1.08);
+}
+
+/* Responsive mejoras para imagen */
+@media (max-width: 900px) {
+  .project-image,
+  .experience-image {
+    height: 180px !important;
+    border-radius: 14px 14px 0 0;
+  }
+  .project-image img,
+  .experience-image img {
+    border-radius: 14px 14px 0 0;
+  }
+}
+@media (max-width: 600px) {
+  .project-image,
+  .experience-image {
+    height: 120px !important;
+    border-radius: 10px 10px 0 0;
+  }
+  .project-image img,
+  .experience-image img {
+    border-radius: 10px 10px 0 0;
+  }
+  .project-card label[title="Cambiar imagen"],
+  .experience-image label[title="Cambiar imagen"] {
+    bottom: 6px;
+    right: 6px;
+    padding: 7px;
+  }
+}
+
+/* Mejora para los botones de editar/eliminar en móvil */
+.project-info > div[style*="margin-top: 10px"] button {
+  width: 100%;
+  margin-bottom: 8px;
+  font-size: 1.05rem;
+  padding: 0.7rem 0;
+  border-radius: 10px;
+  background: #444;
+  color: #fff;
+  border: none;
+  transition: background 0.2s;
+}
+.project-info > div[style*="margin-top: 10px"] button:hover {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+/* Mejora para los tags de tecnologías */
+.project-tech span {
+  background: rgba(106, 61, 232, 0.13);
+  color: var(--primary-color);
+  font-size: 0.92rem;
+  padding: 0.32rem 1.1rem;
+  border-radius: 15px;
+  font-weight: 500;
+  margin-right: 0.3rem;
+  margin-bottom: 0.3rem;
+  display: inline-block;
+  transition: background 0.2s, color 0.2s;
+}
+.project-tech span:hover {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+/* --- MEJORAS RESPONSIVE PARA PROYECTOS Y EXPERIENCIA EN MÓVIL --- */
+@media (max-width: 600px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+    margin: 1rem 0;
+    padding: 0 0.2rem;
+  }
+  .project-card {
+    max-width: 100vw;
+    min-width: 0;
+    min-height: 180px;
+    padding: 0;
+    border-radius: 10px !important;
+    box-shadow: 0 2px 8px rgba(106,61,232,0.10);
+    margin: 0 auto 1rem auto;
+  }
+  .project-info {
+    padding: 0.7rem 0.5rem !important;
+    font-size: 0.98rem !important;
+  }
+  .experience-image,
+  .project-image {
+    height: 100px !important;
+    border-radius: 10px 10px 0 0 !important;
+    min-height: 80px;
+    max-height: 120px;
+  }
+  .experience-image img,
+  .project-image img {
+    border-radius: 10px 10px 0 0 !important;
+  }
+  .project-tech span {
+    font-size: 0.85rem;
+    padding: 0.22rem 0.7rem;
+    margin-right: 0.15rem;
+    margin-bottom: 0.15rem;
+  }
+  .project-back-content,
+  .flip-card-front,
+  .flip-card-back {
+    min-height: 180px !important;
+    padding: 0.7rem 0.3rem !important;
+    font-size: 0.93rem !important;
+  }
+  .flip-card-inner {
+    min-height: 180px !important;
+  }
+}
+
+/* --- MEJORAS RESPONSIVE PARA QUE LAS TARJETAS SE VEAN DE 1 EN 1 Y GRANDES EN MÓVIL --- */
+@media (max-width: 900px) {
+  .projects-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.2rem;
+    margin: 1.2rem 0;
+    padding: 0 0.2rem;
+  }
+  .project-card {
+    max-width: 98vw !important;
+    min-width: 0;
+    min-height: 320px;
+    padding: 0;
+    border-radius: 14px !important;
+    margin: 0 auto 1.2rem auto;
+  }
+  .project-info {
+    padding: 1.2rem 1rem !important;
+    font-size: 1.08rem !important;
+  }
+  .experience-image,
+  .project-image {
+    height: 180px !important;
+    border-radius: 14px 14px 0 0 !important;
+    min-height: 120px;
+    max-height: 220px;
+  }
+  .experience-image img,
+  .project-image img {
+    border-radius: 14px 14px 0 0 !important;
+  }
+  .project-back-content,
+  .flip-card-front,
+  .flip-card-back {
+    min-height: 320px !important;
+    padding: 1.2rem 0.7rem !important;
+    font-size: 1.05rem !important;
+  }
+  .flip-card-inner {
+    min-height: 320px !important;
+  }
+}
+@media (max-width: 600px) {
+  .projects-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0.7rem;
+    margin: 1rem 0;
+    padding: 0 0.1rem;
+  }
+  .project-card {
+    max-width: 100vw !important;
+    min-width: 0;
+    min-height: 220px;
+    padding: 0;
+    border-radius: 10px !important;
+    margin: 0 auto 1rem auto;
+  }
+  .project-info {
+    padding: 0.7rem 0.5rem !important;
+    font-size: 1rem !important;
+  }
+  .experience-image,
+  .project-image {
+    height: 120px !important;
+    border-radius: 10px 10px 0 0 !important;
+    min-height: 80px;
+    max-height: 140px;
+  }
+  .experience-image img,
+  .project-image img {
+    border-radius: 10px 10px 0 0 !important;
+  }
+  .project-back-content,
+  .flip-card-front,
+  .flip-card-back {
+    min-height: 220px !important;
+    padding: 0.7rem 0.3rem !important;
+    font-size: 0.98rem !important;
+  }
+  .flip-card-inner {
+    min-height: 220px !important;
+  }
+}
+
+/* --- MEJORAS RESPONSIVE PARA MI EXPERIENCIA EN MÓVIL --- */
+@media (max-width: 900px) {
+ 
+  .experience-card {
+    min-width: 0;
+    width: 100%;
+    margin: 0 auto 1.2rem auto;
+    border-radius: 14px !important;
+    box-shadow: 0 2px 8px rgba(106,61,232,0.10);
+    padding: 0 !important;
+  }
+  .experience-content {
+    padding: 1.2rem 1rem !important;
+  }
+  .experience-title {
+    font-size: 1.18rem !important;
+  }
+  .experience-image {
+    height: 120px !important;
+    border-radius: 14px 14px 0 0 !important;
+    min-height: 80px;
+    max-height: 140px;
+  }
+  .experience-image img {
+    border-radius: 14px 14px 0 0 !important;
+  }
+}
+@media (max-width: 600px) {
+
+  .experience-card {
+    min-width: 0;
+    width: 100%;
+    margin: 0 auto 1rem auto;
+    border-radius: 10px !important;
+    box-shadow: 0 2px 8px rgba(106,61,232,0.10);
+    padding: 0 !important;
+  }
+  .experience-content {
+    padding: 0.7rem 0.5rem !important;
+  }
+  .experience-title {
+    font-size: 1.05rem !important;
+  }
+  .experience-image {
+    height: 80px !important;
+    border-radius: 10px 10px 0 0 !important;
+    min-height: 60px;
+    max-height: 100px;
+  }
+  .experience-image img {
+    border-radius: 10px 10px 0 0 !important;
+  }
+}
+
+/* --- MEJORAS PARA FLIP-CARD EN MÓVIL --- */
+@media (max-width: 600px) {
+  .flip-card,
+  .flip-card-front,
+  .flip-card-back {
+    min-height: 180px !important;
+    border-radius: 10px !important;
+  }
+  .flip-card-inner {
+    min-height: 180px !important;
+  }
+  .project-back-content {
+    padding: 0.7rem 0.3rem !important;
+    font-size: 0.93rem !important;
+  }
+}
+
+/* --- AJUSTES GENERALES PARA BOTONES Y OVERLAYS EN MÓVIL --- */
+@media (max-width: 600px) {
+  .project-card label[title="Cambiar imagen"],
+  .experience-image label[title="Cambiar imagen"] {
+    bottom: 4px;
+    right: 4px;
+    padding: 6px;
+  }
+  .project-overlay {
+    padding: 0.7rem !important;
+  }
+  .project-overlay h4 {
+    font-size: 1.1rem !important;
+  }
+  .project-link {
+    font-size: 0.98rem !important;
+    padding: 0.5rem 1rem !important;
+  }
+}
+
+/* --- AJUSTES PARA SECCIÓN DE PROYECTOS DESTACADOS Y OTROS PROYECTOS EN MÓVIL --- */
+@media (max-width: 900px) {
+  .section-title {
+    font-size: 1.7rem !important;
+    margin-bottom: 1.2rem !important;
+    padding: 0 0.2rem;
+  }
+}
+@media (max-width: 600px) {
+  .section-title {
+    font-size: 1.3rem !important;
+    margin-bottom: 1.2rem !important;
+    padding: 0 0.2rem;
+  }
+}
+
+/* Otros proyectos: tarjetas más grandes y legibles */
+.projects-grid .project-card {
+  min-height: 520px;
+  height: auto;
+  max-width: 900px;
+  font-size: 1.13rem;
+  padding: 0;
+  /* Asegura que el contenido no se corte */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.projects-grid .project-info {
+  font-size: 1.13rem;
+  padding: 2rem 1.5rem;
+}
+
+.projects-grid .project-card h4 {
+  font-size: 1.45rem;
+  margin-bottom: 1rem;
+}
+
+.projects-grid .project-tech span {
+  font-size: 1.05rem;
+  padding: 0.38rem 1.3rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Responsive: mejora para Otros proyectos en móvil */
+@media (max-width: 900px) {
+  .projects-grid .project-card {
+    min-height: 420px;
+    font-size: 1.08rem;
+    padding: 0;
+  }
+  .projects-grid .project-info {
+    padding: 1.2rem 1rem;
+    font-size: 1.08rem;
+  }
+  .projects-grid .project-card h4 {
+    font-size: 1.18rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .projects-grid .project-card {
+    min-height: 300px;
+    font-size: 1rem;
+    padding: 0;
+  }
+  .projects-grid .project-info {
+    padding: 0.7rem 0.5rem;
+    font-size: 1rem;
+  }
+  .projects-grid .project-card h4 {
+    font-size: 1.05rem;
+  }
+}
+
+/* ...existing code... */
 .flip-card {
   perspective: 1200px;
   position: relative;
@@ -247,14 +673,145 @@
 }
 
 /* Responsive: tarjetas más compactas en móvil */
-@media (max-width: 600px) {
-  .flip-card,
-  .flip-card-front,
-  .flip-card-back {
+@media (max-width: 1200px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+  }
+  .project-card {
+    max-width: 98vw;
+    min-height: 380px;
+  }
+}
+@media (max-width: 900px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+    margin: 1.2rem 0;
+  }
+  .project-card {
+    max-width: 98vw;
     min-height: 320px;
   }
-  .project-back-content {
-    padding: 1.2rem 0.7rem;
-    font-size: 0.98rem;
+  .project-info {
+    padding: 1.2rem 1rem;
+    font-size: 1.05rem;
+  }
+  .experience-image,
+  .project-image {
+    height: 180px !important;
+  }
+}
+@media (max-width: 600px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+    margin: 1rem 0;
+    padding: 0 0.1rem;
+  }
+  .project-card {
+    max-width: 100vw;
+    min-width: 0;
+    min-height: 220px;
+    padding: 0;
+    border-radius: 10px !important;
+    box-shadow: 0 2px 8px rgba(106,61,232,0.10);
+    margin: 0 auto 1rem auto;
+  }
+  .project-info {
+    padding: 0.7rem 0.5rem !important;
+    font-size: 1rem !important;
+  }
+  .experience-image,
+  .project-image {
+    height: 120px !important;
+    border-radius: 10px 10px 0 0 !important;
+    min-height: 80px;
+    max-height: 140px;
+  }
+  .experience-image img,
+  .project-image img {
+    border-radius: 10px 10px 0 0 !important;
+  }
+  .project-tech span {
+    font-size: 0.85rem;
+    padding: 0.22rem 0.7rem;
+    margin-right: 0.15rem;
+    margin-bottom: 0.15rem;
+  }
+  .project-back-content,
+  .flip-card-front,
+  .flip-card-back {
+    min-height: 220px !important;
+    padding: 0.7rem 0.3rem !important;
+    font-size: 0.98rem !important;
+  }
+  .flip-card-inner {
+    min-height: 220px !important;
+  }
+}
+
+/* --- MEJORAS RESPONSIVE PARA MI EXPERIENCIA EN MÓVIL --- */
+@media (max-width: 600px) {
+ 
+  .experience-card {
+    min-width: 0;
+    width: 100%;
+    margin: 0 auto 1rem auto;
+    border-radius: 10px !important;
+    box-shadow: 0 2px 8px rgba(106,61,232,0.10);
+    padding: 0 !important;
+  }
+  .experience-content {
+    padding: 0.7rem 0.5rem !important;
+  }
+  .experience-title {
+    font-size: 1.05rem !important;
+  }
+  .experience-image {
+    height: 80px !important;
+    border-radius: 10px 10px 0 0 !important;
+    min-height: 60px;
+    max-height: 100px;
+  }
+  .experience-image img {
+    border-radius: 10px 10px 0 0 !important;
+  }
+}
+
+/* --- AJUSTES GENERALES PARA BOTONES Y OVERLAYS EN MÓVIL --- */
+@media (max-width: 600px) {
+  .project-card label[title="Cambiar imagen"],
+  .experience-image label[title="Cambiar imagen"] {
+    bottom: 4px;
+    right: 4px;
+    padding: 6px;
+  }
+  .project-overlay {
+    padding: 0.7rem !important;
+  }
+  .project-overlay h4 {
+    font-size: 1.1rem !important;
+  }
+  .project-link {
+    font-size: 0.98rem !important;
+    padding: 0.5rem 1rem !important;
+  }
+}
+
+/* --- AJUSTES PARA SECCIÓN DE PROYECTOS DESTACADOS Y OTROS PROYECTOS EN MÓVIL --- */
+@media (max-width: 900px) {
+  .section-title {
+    font-size: 1.7rem !important;
+    margin-bottom: 1.2rem !important;
+    padding: 0 0.2rem;
+  }
+}
+@media (max-width: 600px) {
+  .section-title {
+    font-size: 1.3rem !important;
+    margin-bottom: 1.2rem !important;
+    padding: 0 0.2rem;
   }
 }

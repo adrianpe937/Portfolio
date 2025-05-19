@@ -1,34 +1,34 @@
 :root {
   /* Paleta mejorada para modo claro */
-  --bg-color: #f6f8fa;
+  --bg-color: #f7fafc;
   --text-color: #23272f;
-  --card-bg: #ffffff;
+  --card-bg: #fcfcff;
   --card-text: #23272f;
-  --nav-bg: #f8fafc;
+  --nav-bg: #f5f7fa;
   --nav-link: #23272f;
-  --nav-link-hover: #3b82f6;
-  --button-bg: #6a3de8;
-  --button-hover: #5429d0;
-  --repo-title: #3b82f6;
-  --table-header-bg: #f1f5f9;
+  --nav-link-hover: #6a3de8;
+  --button-bg: #b6aaff;
+  --button-hover: #a78bfa;
+  --repo-title: #6a3de8;
+  --table-header-bg: #f3f4fa;
   --table-text: #23272f;
-  --edit-border: #3b82f6;
-  --save-border: #22c55e;
-  --logout-border: #ef4444;
-  --button-dark-bg: #23272f;
-  --button-dark-hover: #111827;
+  --edit-border: #a78bfa;
+  --save-border: #38b2ac;
+  --logout-border: #e53e3e;
+  --button-dark-bg: #ececff;
+  --button-dark-hover: #e0e7ff;
   --table-bg: #f9fafb;
   --table-border: #e5e7eb;
 
   /* Mejoras visuales */
-  --text-color-light: #6b7280;
-  --primary-color: #6a3de8;
-  --primary-color-hover: #5429d0;
-  --primary-color-light: #a78bfa;
-  --primary-color-rgb: 106, 61, 232;
-  --secondary-color: #38b2ac;
-  --secondary-color-light: #67e8f9;
-  --card-border: rgba(106, 61, 232, 0.08);
+  --text-color-light: #7b8190;
+  --primary-color: #a78bfa;
+  --primary-color-hover: #6a3de8;
+  --primary-color-light: #e0e7ff;
+  --primary-color-rgb: 167, 139, 250;
+  --secondary-color: #b2f5ea;
+  --secondary-color-light: #e6fffa;
+  --card-border: rgba(167, 139, 250, 0.10);
 }
 
 body.dark {

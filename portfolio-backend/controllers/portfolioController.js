@@ -3,10 +3,9 @@ const Portfolio = require('../models/Portfolio');
 // Obtener datos del portfolio
 const getPortfolioData = async (req, res) => {
   try {
-    if (!req.user || !req.user.isAdmin) {
-      return res.status(403).json({ message: 'Acceso denegado: Solo administradores' });
-    }
-
+    // Log para ver el usuario autenticado
+    console.log('Usuario autenticado:', req.user);
+    // Ya no requiere admin, solo autenticación
     const data = await Portfolio.find(); // Obtiene los datos de la colección
     console.log('Datos obtenidos del backend:', data); // Log para depurar
     res.json(data);
@@ -32,6 +31,7 @@ const addPortfolioData = async (req, res) => {
 const updatePortfolioData = async (req, res) => {
   const { id } = req.params;
   try {
+    // Permite actualizar imageUrl además de otros campos
     const updated = await Portfolio.findByIdAndUpdate(id, req.body, { new: true });
     res.json(updated);
   } catch (error) {

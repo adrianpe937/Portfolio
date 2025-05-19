@@ -1,8 +1,7 @@
-const isAdmin = (req, res, next) => {
-  if (!req.user || req.user.isAdmin !== true) {
-    return res.status(403).json({ message: 'Acceso denegado: Solo administradores' });
+module.exports = function (req, res, next) {
+  console.log('Middleware isAdmin - req.user:', req.user);
+  if (req.user && req.user.isAdmin) {
+    return next();
   }
-  next();
+  return res.status(403).json({ message: 'Acceso denegado: Solo administradores' });
 };
-
-module.exports = isAdmin;

@@ -60,10 +60,12 @@ const usePortfolioLogic = () => {
   useEffect(() => {
     const obtenerDatosPortfolio = async () => {
       try {
+        const headers = {};
+        if (tokenGuardado) {
+          headers['Authorization'] = `Bearer ${tokenGuardado}`;
+        }
         const respuesta = await fetch('http://localhost:5000/api/portfolio', {
-          headers: {
-            'Authorization': `Bearer ${tokenGuardado}`,
-          },
+          headers
         });
         if (!respuesta.ok) throw new Error('Error al obtener los datos del portfolio');
         const datos = await respuesta.json();
@@ -130,8 +132,39 @@ const usePortfolioLogic = () => {
   // =======================
   // Handlers para acciones (enlazados con los estados locales)
   // =======================
-  const handleAdd = () =>
-    manejarAgregar(setDatosPortfolio, setEditando, setDatosEditados, tokenGuardado);
+  const handleAdd = async () => {
+    try {
+      const nuevaSeccion = { section: 'Nueva Sección', content: 'Nuevo contenido...' };
+      const res = await fetch('http://localhost:5000/api/portfolio', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${tokenGuardado}`,
+        },
+        body: JSON.stringify(nuevaSeccion),
+      });
+
+      if (!res.ok) throw new Error('Error al agregar una nueva sección');
+
+      const data = await res.json();
+      // data.data es el nuevo objeto creado
+      setDatosPortfolio(prev => [data.data, ...prev]);
+      setEditando(true);
+      setDatosEditados([]);
+      // Opcional: notificación de éxito
+      if (window.Swal) {
+        window.Swal.fire({
+          icon: 'success',
+          title: '¡Sección añadida con éxito!',
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
+    } catch (error) {
+      setError('Error al agregar una nueva sección');
+      console.error('Error al agregar una nueva sección:', error);
+    }
+  };
 
   const handleDelete = (id) =>
     manejarEliminar(id, setDatosPortfolio, setIdsSeleccionados, tokenGuardado);

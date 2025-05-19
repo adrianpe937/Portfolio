@@ -119,11 +119,33 @@ nav button:focus,
 @media (max-width: 900px) {
   nav {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
     padding: 0.8rem 1rem;
     min-height: unset;
+    position: relative;
   }
-  .nav-links,
+  .nav-mobile-header {
+    display: flex;
+  }
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    background: var(--card-bg, #fff);
+    position: absolute;
+    top: 60px;
+    left: 0;
+    z-index: 1001;
+    box-shadow: 0 8px 32px rgba(106, 61, 232, 0.10);
+    border-radius: 0 0 16px 16px;
+    padding: 1.2rem 0.5rem 1.5rem 1.5rem;
+    gap: 1.2rem;
+    animation: fadeIn 0.3s;
+  }
+  .nav-links.nav-links-open {
+    display: flex;
+  }
   .nav-right {
     flex-direction: column;
     align-items: flex-start;
@@ -140,6 +162,17 @@ nav button:focus,
     width: 100%;
     margin-left: 0;
   }
+}
+
+/* --- Hamburger animation (optional) --- */
+.nav-open .nav-hamburger .hamburger-bar:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+.nav-open .nav-hamburger .hamburger-bar:nth-child(2) {
+  opacity: 0;
+}
+.nav-open .nav-hamburger .hamburger-bar:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
 }
 
 body.dark {
@@ -278,4 +311,109 @@ body.dark .logoutButtonApp:hover {
 /* Sombra sutil al pasar el ratón por el nav */
 nav:hover {
   box-shadow: 0 8px 32px rgba(106, 61, 232, 0.10), 0 1.5px 8px rgba(56,178,172,0.08);
+}
+
+/* --- Responsive Header --- */
+.nav-mobile-header {
+  display: none;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+.nav-logo {
+  font-weight: bold;
+  font-size: 1.3rem;
+  color: var(--primary-color, #6a3de8);
+  letter-spacing: 1px;
+}
+.nav-hamburger {
+  background: none;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 0.5rem;
+  z-index: 1200;
+}
+.hamburger-bar {
+  width: 28px;
+  height: 3px;
+  background: var(--primary-color, #6a3de8);
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+/* --- Responsive nav --- */
+@media (max-width: 900px) {
+  nav {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0.8rem 1rem;
+    min-height: unset;
+    position: relative;
+  }
+  .nav-mobile-header {
+    display: flex;
+  }
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    background: var(--card-bg, #fff);
+    position: absolute;
+    top: 60px;
+    left: 0;
+    z-index: 1001;
+    box-shadow: 0 8px 32px rgba(106, 61, 232, 0.10);
+    border-radius: 0 0 16px 16px;
+    padding: 1.2rem 0.5rem 1.5rem 1.5rem;
+    gap: 1.2rem;
+    animation: fadeIn 0.3s;
+  }
+  .nav-links.nav-links-open {
+    display: flex;
+  }
+  .nav-right {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    margin-top: 0.5rem;
+    gap: 0.5rem;
+  }
+  .user-info {
+    margin: 0.5rem 0;
+  }
+  nav button,
+  .nav-right button,
+  .logoutButtonApp {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
+/* --- Hamburger animation (optional) --- */
+.nav-open .nav-hamburger .hamburger-bar:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+.nav-open .nav-hamburger .hamburger-bar:nth-child(2) {
+  opacity: 0;
+}
+.nav-open .nav-hamburger .hamburger-bar:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Mejora: asegúrate que el menú hamburguesa solo se muestre en móvil */
+@media (max-width: 900px) {
+  .nav-mobile-header {
+    display: flex;
+  }
+  .nav-links {
+    display: none;
+  }
+  .nav-links.nav-links-open {
+    display: flex;
+  }
 }

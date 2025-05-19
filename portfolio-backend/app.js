@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const bodyParser = require('body-parser');
 require('dotenv').config();
 
 const authRoutes = require('./routes/authRoutes');
@@ -25,8 +24,8 @@ app.use(cors({
 }));
 
 // ✅ Middlewares esenciales
-app.use(bodyParser.json());
-app.use(express.json());
+app.use(express.json({ limit: '20mb' }));
+app.use(express.urlencoded({ limit: '20mb', extended: true }));
 
 // ✅ Ruta de prueba
 app.get('/test', (req, res) => {

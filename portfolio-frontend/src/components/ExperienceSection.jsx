@@ -16,26 +16,33 @@ const ExperienceSection = ({
   getSectionIcon,
   setDatosPortfolio,
   datosEditados = [],
-  // Nuevo: para editar título y foto
   handleEditTitle,
   handleEditImage,
 }) => {
-  // --- Drag & Drop puro JS ---
   const [draggedIndex, setDraggedIndex] = useState(null);
   const [dragOverIndex, setDragOverIndex] = useState(null);
   const dragItem = useRef(null);
 
-  // Inicia el drag
+  // Detectar si el usuario es admin leyendo el token
+  let isAdmin = false;
+  try {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      isAdmin = !!payload.isAdmin;
+    }
+  } catch {
+    isAdmin = false;
+  }
+
   const handleDragStart = (index) => {
     setDraggedIndex(index);
     dragItem.current = index;
   };
 
-  // Cuando entra en otra tarjeta
   const handleDragEnter = (index) => {
     setDragOverIndex(index);
     if (draggedIndex === null || draggedIndex === index) return;
-    // Reordena visualmente al arrastrar sobre otra tarjeta
     const newList = [...datosPortfolio];
     const [removed] = newList.splice(draggedIndex, 1);
     newList.splice(index, 0, removed);
@@ -43,39 +50,11 @@ const ExperienceSection = ({
     setDatosPortfolio(newList);
   };
 
-  // Finaliza el drag
   const handleDragEnd = () => {
     setDraggedIndex(null);
     setDragOverIndex(null);
     dragItem.current = null;
   };
-
-  // Estilo de la tarjeta arrastrada
-  const getItemStyle = (index) => ({
-    opacity: draggedIndex === index ? 0.7 : 1,
-    zIndex: draggedIndex === index ? 5 : 1,
-    boxShadow: draggedIndex === index
-      ? "0 12px 24px rgba(106,61,232,0.25)"
-      : "var(--card-shadow)",
-    background: dragOverIndex === index && draggedIndex !== null ? "#f3f0ff" : undefined,
-    position: "relative",
-    width: "calc(50% - 1.25rem)",
-    transition: "box-shadow 0.18s, opacity 0.18s, background 0.18s",
-    cursor: "grab",
-  });
-
-  // Estilo del grid
-  const getGridStyle = () => ({
-    minHeight: "350px",
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    gap: "2.5rem",
-    width: "100%",
-    maxWidth: "1200px",
-    margin: "0 auto 3rem auto",
-    overflow: "hidden",
-  });
 
   // Helpers para edición de título y foto
   const getEditedValue = (id, field, fallback) => {
@@ -86,58 +65,55 @@ const ExperienceSection = ({
   return (
     <section className="mi-experiencia-section" data-aos="fade-up">
       <h2 className="section-title">Mi Experiencia</h2>
-      <div
-        className="top-buttons"
-        style={{
-          justifyContent: "flex-start",
-          marginBottom: "1.2rem",
-          flexWrap: "wrap",
-          gap: "1rem",
-          alignItems: "flex-start",
-          display: "flex",
-        }}
-      >
-        <button
-          className="add-button"
-          style={{ background: "#888", color: "white" }}
-          onClick={handleSelectAll}
-        >
-          {idsSeleccionados.length > 0 ? "Deseleccionar" : "Seleccionar"}
-        </button>
-        {idsSeleccionados.length > 1 && (
-          <button className="delete-btn" onClick={handleDeleteMultiple}>
-            <FaTrash className="button-icon" /> Eliminar seleccionadas ({idsSeleccionados.length})
+      {/* Solo mostrar botones si es admin */}
+      {isAdmin && (
+        <div className="top-buttons">
+          <button
+            className="add-button"
+            onClick={handleSelectAll}
+            disabled={!isAdmin}
+            title={!isAdmin ? "Solo administradores pueden seleccionar" : undefined}
+          >
+            {idsSeleccionados.length > 0 ? "Deseleccionar" : "Seleccionar"}
           </button>
-        )}
-        {idsSeleccionados.length === 1 && (
-          <button className="delete-btn" onClick={() => handleDelete(idsSeleccionados[0])}>
-            <FaTrash className="button-icon" /> Eliminar seleccionada
-          </button>
-        )}
-        {idsSeleccionados.length <= 1 && (
-          <>
-            <button className="edit-button" onClick={handleEditToggle}>
-              <FaEdit className="button-icon" />
-              {editando ? "Guardar cambios" : "Editar contenido"}
+          {idsSeleccionados.length > 1 && (
+            <button className="delete-btn" onClick={handleDeleteMultiple} disabled={!isAdmin}>
+              <FaTrash className="button-icon" /> Eliminar seleccionadas ({idsSeleccionados.length})
             </button>
-            <button className="add-button" onClick={handleAdd}>
-              <FaPlus className="button-icon" />
-              Agregar sección
+          )}
+          {idsSeleccionados.length === 1 && (
+            <button className="delete-btn" onClick={() => handleDelete(idsSeleccionados[0])} disabled={!isAdmin}>
+              <FaTrash className="button-icon" /> Eliminar seleccionada
             </button>
-          </>
-        )}
-      </div>
+          )}
+          {idsSeleccionados.length <= 1 && (
+            <>
+              <button className="edit-button" onClick={handleEditToggle} disabled={!isAdmin}>
+                <FaEdit className="button-icon" />
+                {editando ? "Guardar cambios" : "Editar contenido"}
+              </button>
+              <button className="add-button" onClick={handleAdd} disabled={!isAdmin}>
+                <FaPlus className="button-icon" />
+                Agregar sección
+              </button>
+            </>
+          )}
+        </div>
+      )}
+
+      {/* No mostrar mensaje de solo admin */}
+      {/* {!isAdmin && (
+        <div style={{ color: "#e53e3e", fontWeight: 600, marginBottom: 16, textAlign: "center" }}>
+          Solo los administradores pueden editar la experiencia.
+        </div>
+      )} */}
 
       {error ? (
         <p className="error-message">{error}</p>
       ) : (
-        <div
-          className="mi-experiencia-grid"
-          style={getGridStyle()}
-        >
+        <div className="mi-experiencia-grid">
           {datosPortfolio.map(({ _id, section, content, imageUrl }, i) => {
             const isSelected = idsSeleccionados.includes(_id);
-            // Permite edición en tiempo real de título y foto
             const editedTitle = getEditedValue(_id, "section", section);
             const editedImage = getEditedValue(_id, "imageUrl", imageUrl);
 
@@ -160,52 +136,34 @@ const ExperienceSection = ({
               <div
                 key={_id}
                 className={`experience-card${draggedIndex === i ? " dragging" : ""}${isSelected ? " selected-card" : ""}`}
-                style={getItemStyle(i)}
-                draggable
-                onDragStart={() => handleDragStart(i)}
-                onDragEnter={draggedIndex !== null && draggedIndex !== i ? () => handleDragEnter(i) : undefined}
-                onDragEnd={handleDragEnd}
-                onDragOver={e => draggedIndex !== null && e.preventDefault()}
+                draggable={isAdmin}
+                onDragStart={isAdmin ? () => handleDragStart(i) : undefined}
+                onDragEnter={isAdmin && draggedIndex !== null && draggedIndex !== i ? () => handleDragEnter(i) : undefined}
+                onDragEnd={isAdmin ? handleDragEnd : undefined}
+                onDragOver={isAdmin && draggedIndex !== null ? e => e.preventDefault() : undefined}
                 data-aos={draggedIndex !== i ? "fade-up" : undefined}
                 data-aos-delay={draggedIndex !== i ? i * 100 : undefined}
               >
-                <input
-                  type="checkbox"
-                  checked={isSelected}
-                  onChange={() => handleSelectCard(_id)}
-                  style={{
-                    position: "absolute",
-                    top: 16,
-                    left: 16,
-                    zIndex: 2,
-                    width: 22,
-                    height: 22,
-                    accentColor: "#6a3de8",
-                  }}
-                  aria-label="Seleccionar sección"
-                />
-                {/* Imagen editable */}
-                <div className="experience-image" style={{ position: "relative" }}>
+                {/* Solo admin puede seleccionar */}
+                {isAdmin && (
+                  <input
+                    type="checkbox"
+                    checked={isSelected}
+                    onChange={() => handleSelectCard(_id)}
+                    className="experience-checkbox"
+                    aria-label="Seleccionar sección"
+                    disabled={!isAdmin}
+                  />
+                )}
+                <div className="experience-image">
                   <img
                     src={customImage}
                     alt={editedTitle}
-                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
                   />
-                  {editando && (
+                  {/* Solo admin puede editar imagen */}
+                  {editando && isAdmin && (
                     <label
-                      style={{
-                        position: "absolute",
-                        bottom: 8,
-                        right: 8,
-                        background: "rgba(0,0,0,0.6)",
-                        borderRadius: "50%",
-                        padding: 8,
-                        cursor: "pointer",
-                        zIndex: 3,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
+                      className="experience-image-edit-label"
                       title="Cambiar imagen"
                     >
                       <FaCamera color="#fff" />
@@ -217,17 +175,35 @@ const ExperienceSection = ({
                           const file = e.target.files[0];
                           if (file) {
                             const reader = new FileReader();
-                            reader.onload = ev => {
+                            reader.onload = async ev => {
+                              const imageData = ev.target.result;
                               if (handleEditImage) {
-                                handleEditImage(_id, ev.target.result);
+                                handleEditImage(_id, imageData);
                               } else if (typeof setDatosPortfolio === "function") {
                                 setDatosPortfolio(prev =>
                                   prev.map(item =>
                                     item._id === _id
-                                      ? { ...item, imageUrl: ev.target.result }
+                                      ? { ...item, imageUrl: imageData }
                                       : item
                                   )
                                 );
+                              }
+                              try {
+                                const token = localStorage.getItem('token');
+                                const res = await fetch(`http://localhost:5000/api/portfolio/${_id}`, {
+                                  method: 'PUT',
+                                  headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${token}`,
+                                  },
+                                  body: JSON.stringify({ imageUrl: imageData }),
+                                });
+                                if (!res.ok) {
+                                  alert("No tienes permisos para guardar la imagen. Debes ser administrador.");
+                                }
+                              } catch (err) {
+                                alert('Error al guardar la imagen. ¿Eres administrador?');
+                                console.error('Error al guardar la imagen:', err);
                               }
                             };
                             reader.readAsDataURL(file);
@@ -240,8 +216,8 @@ const ExperienceSection = ({
                 <div className="experience-content">
                   <div className="experience-header">
                     <div className="experience-icon">{getSectionIcon(editedTitle)}</div>
-                    {/* Título editable */}
-                    {editando ? (
+                    {/* Solo admin puede editar título */}
+                    {editando && isAdmin ? (
                       <input
                         type="text"
                         value={editedTitle}
@@ -257,17 +233,6 @@ const ExperienceSection = ({
                               )
                         }
                         className="experience-title"
-                        style={{
-                          fontSize: "1.6rem",
-                          fontWeight: "bold",
-                          color: "#fff",
-                          background: "rgba(0,0,0,0.08)",
-                          border: "none",
-                          borderRadius: 6,
-                          padding: "0.2em 0.5em",
-                          marginBottom: 0,
-                          outline: "none",
-                        }}
                         maxLength={60}
                       />
                     ) : (

@@ -8,11 +8,13 @@ const {
   updatePortfolioData,
   deletePortfolioData,
 } = require('../controllers/portfolioController');
+const { enviarContacto } = require('../controllers/contactoController');
 
 // Rutas para el Portfolio
-router.get('/', authenticateToken, isAdmin, getPortfolioData); // Protegida con authenticateToken y isAdmin
+router.get('/', getPortfolioData); // <-- Pública, sin authenticateToken
 router.post('/', authenticateToken, isAdmin, addPortfolioData);
-router.put('/:id', authenticateToken, isAdmin, updatePortfolioData);
-router.delete('/:id', authenticateToken, isAdmin, deletePortfolioData);
+router.put('/:id', authenticateToken, updatePortfolioData); // <--- quita isAdmin
+router.delete('/:id', authenticateToken, deletePortfolioData); // <--- quita isAdmin
+router.post('/contacto', enviarContacto);
 
 module.exports = router;

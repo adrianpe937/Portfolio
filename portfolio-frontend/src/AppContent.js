@@ -15,6 +15,7 @@ function AppContent() {
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
   const [theme, toggleTheme] = useDarkMode();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('token'); // Obtén el token del localStorage
@@ -43,27 +44,47 @@ function AppContent() {
     setUsername(newUsername); // Actualiza el estado del nombre de usuario
   };
 
+  // Cierra el menú al navegar
+  const handleNavClick = () => setMenuOpen(false);
+
+  // Cierra el menú al cambiar de tamaño a desktop
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 900) setMenuOpen(false);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <>
-      <nav>
-        <div className="nav-links">
-          {/* Enlaces internos a secciones del portfolio */}
-          <a href="/portfolio#about" className="nav-link">Acerca de mí</a>
-          <a href="/portfolio#experience" className="nav-link">Mi experiencia</a>
-          <a href="/portfolio#projects" className="nav-link">Proyectos Destacados</a>
-          <a href="/portfolio#contact" className="nav-link">Contacto</a>
-          {/* Enlaces de navegación generales */}
-          {!username && <Link to="/register">Registro</Link>}
-          {!username && <Link to="/login">Login</Link>}
-          {isAdmin && <Link to="/usuarios">Usuarios</Link>}
-          <Link to="/portfolio">Portfolio</Link>
-          {/* <Link to="/alerta-empleo">Alerta de Empleo</Link> */}
-          {username && <Link to="/perfil">Perfil</Link>}
-          {/* {username && <Link to="/dashboard">Dashboard</Link>} */}
+      <nav className={menuOpen ? "nav-open" : ""}>
+        <div className="nav-mobile-header">
+          <span className="nav-logo">Portfolio</span>
+          <button
+            className="nav-hamburger"
+            aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen(open => !open)}
+          >
+            <span className="hamburger-bar"></span>
+            <span className="hamburger-bar"></span>
+            <span className="hamburger-bar"></span>
+          </button>
         </div>
-
-        {username && <span className="user-info">Bienvenido, {username}</span>} {/* Muestra el nombre del usuario */}
-
+        <div className={`nav-links${menuOpen ? " nav-links-open" : ""}`}>
+          {/* Enlaces internos a secciones del portfolio */}
+          <a href="/portfolio#about" className="nav-link" onClick={handleNavClick}>Acerca de mí</a>
+          <a href="/portfolio#experience" className="nav-link" onClick={handleNavClick}>Mi experiencia</a>
+          <a href="/portfolio#projects" className="nav-link" onClick={handleNavClick}>Proyectos Destacados</a>
+          <a href="/portfolio#contact" className="nav-link" onClick={handleNavClick}>Contacto</a>
+          {/* Enlaces de navegación generales */}
+          {!username && <Link to="/register" onClick={handleNavClick}>Registro</Link>}
+          {!username && <Link to="/login" onClick={handleNavClick}>Login</Link>}
+          {isAdmin && <Link to="/usuarios" onClick={handleNavClick}>Usuarios</Link>}
+          <Link to="/portfolio" onClick={handleNavClick}>Portfolio</Link>
+          {username && <Link to="/perfil" onClick={handleNavClick}>Perfil</Link>}
+        </div>
         <div className="nav-right">
           <button onClick={toggleTheme}>
             {theme === 'light' ? 'Modo Oscuro 🌙' : 'Modo Claro ☀️'}
@@ -74,11 +95,12 @@ function AppContent() {
             </button>
           ) : (
             <>
-              <Link to="/login">Login</Link>
-              <Link to="/register">Registro</Link>
+              <Link to="/login" onClick={handleNavClick}>Login</Link>
+              <Link to="/register" onClick={handleNavClick}>Registro</Link>
             </>
           )}
         </div>
+        {username && <span className="user-info">Bienvenido, {username}</span>} {/* Muestra el nombre del usuario */}
       </nav>
 
       <Routes>

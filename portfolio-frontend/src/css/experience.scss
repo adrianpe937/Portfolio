@@ -1,0 +1,269 @@
+@import 'variables';
+
+// --- Mi Experiencia Section ---
+.mi-experiencia-section {
+  max-width: 1800px;
+  margin: 0 auto 3rem auto;
+  padding: 3rem 1rem;
+  background: $card-bg;
+  border-radius: $border-radius-lg;
+  box-shadow: $card-shadow;
+  position: relative;
+  overflow: visible;
+  border-left: none !important;
+  border-right: none !important;
+
+  .mi-experiencia-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+    max-width: 1200px;
+    margin: 0 auto 3rem auto;
+    width: 100%;
+
+    @media (max-width: 900px) {
+      grid-template-columns: 1fr !important;
+      gap: 1.5rem;
+      max-width: 100vw;
+      padding: 0 2vw;
+    }
+    @media (max-width: 600px) {
+      gap: 0.7rem !important;
+      max-width: 99vw !important;
+      padding: 0 1vw;
+    }
+  }
+
+  .experience-card {
+    margin-bottom: 3rem;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(to bottom right, #2A2B38, #1E1F26);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    cursor: grab;
+    transition: transform 0.18s cubic-bezier(.4,2,.6,1), opacity 0.18s;
+    animation: slideUpFade 0.8s $transition-timing forwards;
+    opacity: 0;
+    transform: translateY(30px);
+    animation-delay: calc(var(--i, 0) * 0.15s);
+    width: 100%;
+    height: 480px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    min-height: 0;
+
+    &.selected-card {
+      box-shadow: 0 0 0 4px #e53e3e, $card-shadow;
+      border: 2px solid #e53e3e;
+    }
+    &.dragging {
+      opacity: 0.7;
+      z-index: 5;
+      box-shadow: 0 12px 24px rgba(106,61,232,0.25), 0 0 0 2px #6a3de8;
+      background: #23272f;
+      position: relative;
+    }
+
+    @media (max-width: 900px) {
+      max-width: 98vw !important;
+      min-width: 0;
+      min-height: 420px;
+      height: 420px;
+      border-radius: 14px !important;
+      margin: 0 auto 1.2rem auto;
+    }
+    @media (max-width: 600px) {
+      max-width: 99vw !important;
+      min-width: 0;
+      min-height: 340px;
+      height: 340px;
+      border-radius: 10px !important;
+      margin: 0 auto 1rem auto;
+    }
+
+    .experience-image {
+      width: 100%;
+      height: 210px;
+      min-height: 210px;
+      max-height: 210px;
+      border-radius: 14px 14px 0 0;
+      overflow: hidden;
+      position: relative;
+      flex-shrink: 0;
+      flex-grow: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #222;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 14px 14px 0 0;
+        display: block;
+      }
+
+      @media (max-width: 900px) {
+        height: 180px !important;
+        min-height: 180px !important;
+        max-height: 180px !important;
+        border-radius: 14px 14px 0 0 !important;
+        img {
+          border-radius: 14px 14px 0 0 !important;
+        }
+      }
+      @media (max-width: 600px) {
+        height: 120px !important;
+        min-height: 120px !important;
+        max-height: 120px !important;
+        border-radius: 10px 10px 0 0 !important;
+        img {
+          border-radius: 10px 10px 0 0 !important;
+        }
+      }
+
+      .experience-image-edit-label {
+        position: absolute;
+        bottom: 8px;
+        right: 8px;
+        background: rgba(0,0,0,0.6);
+        border-radius: 50%;
+        padding: 8px;
+        cursor: pointer;
+        z-index: 3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s, transform 0.2s;
+
+        &:hover {
+          background: #6a3de8;
+          transform: scale(1.08);
+        }
+      }
+    }
+
+    .experience-content {
+      flex: 1 1 0;
+      padding: 2rem;
+      position: relative;
+      min-height: 0;
+      overflow-y: auto;
+      max-height: calc(100% - 210px);
+
+      @media (max-width: 900px) {
+        max-height: calc(100% - 180px);
+        padding: 1.2rem 1rem !important;
+        font-size: 1.08rem !important;
+      }
+      @media (max-width: 600px) {
+        max-height: calc(100% - 120px);
+        padding: 0.7rem 0.5rem !important;
+        font-size: 1rem !important;
+      }
+
+      &::-webkit-scrollbar {
+        width: 8px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: $primary-color;
+        border-radius: 4px;
+      }
+    }
+
+    .experience-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .experience-title {
+      font-size: 1.6rem;
+      color: #fff;
+      margin-bottom: 0.3rem;
+
+      @media (max-width: 600px) {
+        font-size: 1.05rem !important;
+      }
+    }
+  }
+}
+
+.experience-checkbox {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 2;
+  width: 22px;
+  height: 22px;
+  accent-color: #6a3de8;
+}
+
+.delete-btn {
+  background: linear-gradient(135deg, $danger-color, $danger-color-dark);
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  padding: 0.6rem 1.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  box-shadow: 0 4px 12px rgba(229, 62, 62, 0.10);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
+  outline: none;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+
+  &:hover,
+  &:focus {
+    background: linear-gradient(135deg, #c53030, #e53e3e 80%);
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(229, 62, 62, 0.18);
+    transform: translateY(-2px) scale(1.04);
+  }
+
+  .button-icon {
+    font-size: 1.1rem;
+    margin-right: 0.3rem;
+  }
+}
+
+.delete-todo-btn-row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  margin-top: -1.2rem;
+  gap: 1rem;
+
+  .delete-btn {
+    background: linear-gradient(135deg, $danger-color, $danger-color-dark);
+    color: #fff;
+    border: none;
+    border-radius: 24px;
+    padding: 0.6rem 1.5rem;
+    font-weight: 600;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    box-shadow: 0 4px 12px rgba(229, 62, 62, 0.10);
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
+    outline: none;
+    margin: 0;
+
+    &:hover,
+    &:focus {
+      background: linear-gradient(135deg, #c53030, #e53e3e 80%);
+      color: #fff;
+      box-shadow: 0 6px 18px rgba(229, 62, 62, 0.18);
+      transform: translateY(-2px) scale(1.04);
+    }
+  }
+}

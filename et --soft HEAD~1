@@ -1,0 +1,174 @@
+[33mcommit 55ad6c8814d8891ad4645ec6a00970e7e956a062[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: adrianpe937 <adrianpe937@gmail.com>
+Date:   Mon May 19 22:30:16 2025 +0200
+
+    repositorios bien, estilo bien y admin solo puede editar
+
+[33mcommit c5484d9452e598d346dec819d460133bf3ebb140[m
+Merge: 823218d 4e2fd56
+Author: adrianpe937 <adrianpe937@gmail.com>
+Date:   Mon May 19 16:16:14 2025 +0200
+
+    Merge branch 'main' of https://github.com/adrianpe937/Portfolio
+
+[33mcommit 823218d7e4e94a0c13764d8a55afbcf356c4f09e[m
+Author: adrianpe937 <adrianpe937@gmail.com>
+Date:   Mon May 19 16:16:05 2025 +0200
+
+    aa
+
+[33mcommit 4e2fd5645119d810f56cf69e6dc12de1292d1abf[m
+Author: adrianpe937 <adrianpe937@gmail.com>
+Date:   Mon May 19 12:25:54 2025 +0200
+
+    fotos proyectos
+
+[33mcommit c53d1d4f6f78aa3c16df6fc4aa7b0c3bca4bfb0d[m
+Author: adrianpe937 <adrianpe937@gmail.com>
+Date:   Mon May 19 12:24:05 2025 +0200
+
+    algo de css
+
+[33mcommit f83470d1958199538efd1f9599035fcd4ae1b5a6[m
+Author: adrianpe937 <adrianpe937@gmail.com>
+Date:   Fri May 16 13:59:47 2025 +0200
+
+    header con enlaces internos
+
+[33mcommit 2b250ffa40c25d6301d05c6d29fe8c25346875db[m
+Author: adrianpe937 <adrianpe937@gmail.com>
+Date:   Fri May 16 13:11:25 2025 +0200
+
+    cambiar portfolio.css
+
+[33mcommit 2f77aac94b32f54aeb89cef61d9467eb5ce18650[m
+Author: adrianpe937 <adrianpe937@gmail.com>
+Date:   Fri May 16 10:19:52 2025 +0200
+
+    drag and drop bien
+
+[33mcommit 156ddbc71d66db884c02da42c4454b8064542d09[m
+Author: adrianpe937 <adrianpe937@gmail.com>
+Date:   Fri May 16 09:45:20 2025 +0200
+
+    drag and drop mas o menos con estilo
+
+[33mcommit 3301a967e81fec20bf36703c0519c67631fb8416[m
+Author: adrianpe937 <adrianpe937@gmail.com>
+Date:   Thu May 15 19:20:59 2025 +0200
+
+    drag and drop y funcionalidades de tarjetas
+
+[33mcommit c30eba843d84cc7c9acf97dc4af8b7753d8f3f84[m
+Author: adrianpe937 <adrianpe937@gmail.com>
+Date:   Tue May 13 19:13:49 2025 +0200
+
+    mas css
+
+[33mcommit ac691fb117249659cc7f3906401256805c8960f3[m
+Author: adrianpe937 <adrianpe937@gmail.com>
+Date:   Tue May 13 18:22:49 2025 +0200
+
+    css terminado
+
+[33mcommit 6184a10a0b42443079962bcba726cd20701535ae[m
+Author: adrianpe937 <adrianpe937@gmail.com>
+Date:   Tue May 13 14:09:46 2025 +0200
+
+    css parcial
+
+[33mcommit 35ba1b59651b15cfb4c839ed0c2bce5a2235ac1e[m
+Author: adrianpe937 <adrianpe937@gmail.com>
+Date:   Tue May 13 13:53:40 2025 +0200
+
+    estilo parcial
+
+[33mcommit b4ebb05216e9b210ee9d0d118c95ab2de9ba06a1[m
+Author: adrianpe937 <adrianpe937@gmail.com>
+Date:   Tue May 13 10:40:51 2025 +0200
+
+    login con nombre de usuario en el appcontent
+
+[33mcommit 79b1032f685530434006d88eba9f03b116ef3c1f[m
+Author: adrianpe937 <adrianpe937@gmail.com>
+Date:   Tue May 13 09:03:17 2025 +0200
+
+    base de datos en mongodb atlas con registro y login bien
+
+[33mcommit aafc173df6e622762e5cdbcbb1db94af6fdfb291[m
+Author: adrianpe937 <adrianpe937@gmail.com>
+Date:   Tue May 6 09:27:53 2025 +0200
+
+    perfil perfecto a la hora de guardar cambios
+
+[33mcommit a3fd48f98af5b47afe7b5ab5c681068facce7a43[m
+Author: adrianpe937 <adrianpe937@gmail.com>
+Date:   Tue May 6 09:08:58 2025 +0200
+
+    intento de hacer publicaciones en twitter
+
+[33mcommit 4ff21a4800920e9dcb6c599b3522f44b69f5849c[m
+Author: adrianpe937 <adrianpe937@gmail.com>
+Date:   Wed Apr 30 10:55:05 2025 +0200
+
+    css parcial modo oscuro/claro
+
+[33mcommit 0c6010105fb5cab85bc8968dbc1a23cdf074e258[m
+Author: adrianpe937 <adrianpe937@gmail.com>
+Date:   Mon Apr 28 12:02:52 2025 +0200
+
+    ver usuarios registrados
+
+[33mcommit 339271ff21c6d4c75905e6e89142e0f51be577ce[m
+Author: adrianpe937 <adrianpe937@gmail.com>
+Date:   Thu Apr 24 14:17:11 2025 +0200
+
+    no se ven los usuarios pero tengo diferenciacion de admin
+
+[33mcommit b0cec69f16f31c95e70eb1c8cd912fc0d26fcb8b[m
+Author: adrianpe937 <adrianpe937@gmail.com>
+Date:   Thu Apr 24 13:44:19 2025 +0200
+
+    login con portfolio, sin que el usuario se quite en el nav
+
+[33mcommit 6b8e80aec091e4b16c75d33ac0b6391f72797cf9[m
+Author: adrianpe937 <adrianpe937@gmail.com>
+Date:   Thu Apr 24 12:12:36 2025 +0200
+
+    cerrar sesion y quiar nombre de usuario
+
+[33mcommit fcd3d36719fd94947c173a0a54bc818feefb24b3[m
+Author: adrianpe937 <adrianpe937@gmail.com>
+Date:   Thu Apr 24 10:31:53 2025 +0200
+
+    actualizacion del perfil con repositorios de github
+
+[33mcommit 276c6b51f2e64b1720c236a682335a1cb2aa98f0[m
+Author: adrianpe937 <adrianpe937@gmail.com>
+Date:   Thu Apr 24 09:32:26 2025 +0200
+
+    login/registro + api de github para coger los repositorios publicos
+
+[33mcommit 64ae56d2d363b8ba83e743787fa96ea5f1982b30[m
+Author: adrianpe937 <adrianpe937@gmail.com>
+Date:   Wed Apr 23 10:53:44 2025 +0200
+
+    forntend funcionando
+
+[33mcommit d92c9bcbdc5e71ce10ffdbd877aeff675d9f10bc[m
+Author: adrianpe937 <adrianpe937@gmail.com>
+Date:   Wed Apr 23 10:36:04 2025 +0200
+
+    configuracion
+
+[33mcommit 6782bfddd7d9e55747baab16175a705f2842f461[m
+Author: adrianpe937 <adrianpe937@gmail.com>
+Date:   Wed Apr 23 09:56:38 2025 +0200
+
+    prueba
+
+[33mcommit b7ccbacd5687d31912c86d4d0ef8c0e3ef82082c[m
+Author: adrianpe937 <adrianpe937@gmail.com>
+Date:   Wed Apr 23 09:52:40 2025 +0200
+
+    Estructura

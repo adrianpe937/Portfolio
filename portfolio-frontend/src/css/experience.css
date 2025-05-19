@@ -5,9 +5,17 @@
   background: var(--card-bg);
   border-radius: var(--border-radius-lg);
   box-shadow: var(--card-shadow);
-  border: 1px solid var(--card-border);
+  /* Quita el borde para evitar doble borde */
+  /* border: 1px solid var(--card-border); */
   position: relative;
   overflow: visible;
+}
+
+/* Evita doble borde en la sección principal */
+.mi-experiencia-section {
+  /* Elimina el borde lateral decorativo de la sección principal */
+  border-left: none !important;
+  border-right: none !important;
 }
 
 .mi-experiencia-grid {

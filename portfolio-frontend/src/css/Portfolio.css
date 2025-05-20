@@ -304,6 +304,13 @@ body.dark-mode {
   letter-spacing: 1px;
 }
 
+/* Hero subtitle modo claro */
+.light-mode .hero-subtitle {
+  color: #4b28c7 !important;
+  background: none !important;
+  text-shadow: none !important;
+}
+
 .scroll-indicator {
   
   bottom: 2rem;

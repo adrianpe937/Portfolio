@@ -38,7 +38,12 @@ const Portfolio = () => {
         <div className="hero-overlay"></div>
         <div className="hero-content">
           <h1 className="animated-title">Adrián Peña</h1>
-          <p className="hero-subtitle">Desarrollo Web & Ciberseguridad</p>
+          <p
+            className={`hero-subtitle${logic.darkMode ? "" : " light-mode"}`}
+            style={!logic.darkMode ? { color: "#4b28c7", background: "none", textShadow: "none" } : {}}
+          >
+            Desarrollo Web & Ciberseguridad
+          </p>
           {/* Botón para bajar suavemente a Acerca de mí */}
           <a
             href="#about"

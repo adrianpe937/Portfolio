@@ -66,11 +66,21 @@ const ExperienceSection = ({
 
   // Modal simple para mostrar contenido completo
   const ExperienceModal = ({ open, onClose, title, content }) => {
+    const overlayRef = useRef(null);
+
+    // Cierra el modal si se hace click fuera del contenido
+    const handleOverlayClick = (e) => {
+      if (e.target === overlayRef.current) {
+        onClose();
+      }
+    };
+
     if (!open) return null;
     return (
       <div
         className="experience-modal-overlay"
-        onClick={onClose}
+        ref={overlayRef}
+        onClick={handleOverlayClick}
         tabIndex={-1}
       >
         <div
@@ -100,8 +110,8 @@ const ExperienceSection = ({
     <section className="mi-experiencia-section" data-aos="fade-up">
       <h2 className="section-title">Mi experiencia como desarrollador</h2>
       <p>Desde que comencé en el mundo del desarrollo, he tenido la oportunidad de participar en proyectos reales que me han permitido aprender de forma práctica y profundizar en distintas áreas como la ciberseguridad, el desarrollo web y la administración de sistemas. Aquí te cuento un poco más de cada experiencia:
-
 </p>
+<p><i>"Algunas imagenes son generadas con IA"</i></p>
       {/* Solo mostrar botones si es admin */}
       {isAdmin && (
         <div className="top-buttons">
@@ -397,25 +407,51 @@ const ExperienceSection = ({
                 <div className="experience-content">
                   <div className="experience-header">
                     <div className="experience-icon">{getSectionIcon(editedTitle)}</div>
-                    {/* Solo admin puede editar título */}
+                    {/* Solo admin puede editar título y contenido */}
                     {editando && isAdmin ? (
-                      <input
-                        type="text"
-                        value={editedTitle}
-                        onChange={e =>
-                          handleEditTitle
-                            ? handleEditTitle(_id, e.target.value)
-                            : setDatosPortfolio(prev =>
-                                prev.map(item =>
-                                  item._id === _id
-                                    ? { ...item, section: e.target.value }
-                                    : item
+                      <div style={{ width: "100%" }}>
+                        <input
+                          type="text"
+                          value={editedTitle}
+                          onChange={e =>
+                            handleEditTitle
+                              ? handleEditTitle(_id, e.target.value)
+                              : setDatosPortfolio(prev =>
+                                  prev.map(item =>
+                                    item._id === _id
+                                      ? { ...item, section: e.target.value }
+                                      : item
+                                  )
                                 )
+                          }
+                          className="experience-title"
+                          maxLength={60}
+                          style={{ marginBottom: 8, width: "100%" }}
+                        />
+                        <textarea
+                          value={
+                            typeof editedContent === "string"
+                              ? editedContent
+                              : (Array.isArray(editedContent)
+                                  ? editedContent.join("\n")
+                                  : (editedContent && typeof editedContent === "object"
+                                      ? Object.values(editedContent).join("\n")
+                                      : ""))
+                          }
+                          onChange={e =>
+                            setDatosPortfolio(prev =>
+                              prev.map(item =>
+                                item._id === _id
+                                  ? { ...item, content: e.target.value }
+                                  : item
                               )
-                        }
-                        className="experience-title"
-                        maxLength={60}
-                      />
+                            )
+                          }
+                          className="experience-content-edit"
+                          rows={8}
+                          style={{ width: "100%", resize: "vertical", fontSize: "1.08rem", marginBottom: 8 }}
+                        />
+                      </div>
                     ) : (
                       <h3 className="experience-title" style={{
                         position: "static",
@@ -431,10 +467,12 @@ const ExperienceSection = ({
                     position: "relative"
                   }}>
                     {/* Previsualización: renderiza títulos y ¿Qué hice? */}
-                    <div className="experience-description-clamp">
-                      {renderPreviewContent(cardText)}
-                    </div>
-                    {cardText && cardText.length > 250 && (
+                    {editando && isAdmin ? null : (
+                      <div className="experience-description-clamp">
+                        {renderPreviewContent(cardText)}
+                      </div>
+                    )}
+                    {(!editando || !isAdmin) && cardText && cardText.length > 250 && (
                       <div style={{
                         width: "100%",
                         textAlign: "right",

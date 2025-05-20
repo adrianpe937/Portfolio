@@ -28,7 +28,7 @@ function Login({ setUsername }) {
         localStorage.setItem('token', data.token); // Guarda el token en localStorage
         const decoded = jwtDecode(data.token); // Decodifica el token
         setUsername(decoded.username); // Actualiza el estado del nombre de usuario en AppContent
-        navigate('/perfil'); // Redirige al perfil
+        navigate('/portfolio'); // Redirige a /portfolio
       } else {
         setMensaje(data.message || 'Error al iniciar sesión');
       }

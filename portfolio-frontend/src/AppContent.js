@@ -79,15 +79,20 @@ function AppContent() {
           <a href="/portfolio#projects" className="nav-link" onClick={handleNavClick}>Proyectos Destacados</a>
           <a href="/portfolio#contact" className="nav-link" onClick={handleNavClick}>Contacto</a>
           {/* Enlaces de navegación generales */}
+          {/*
           {!username && <Link to="/register" onClick={handleNavClick}>Registro</Link>}
+          */}
           {!username && <Link to="/login" onClick={handleNavClick}>Login</Link>}
+
+          {/*
           {isAdmin && <Link to="/usuarios" onClick={handleNavClick}>Usuarios</Link>}
           <Link to="/portfolio" onClick={handleNavClick}>Portfolio</Link>
           {username && <Link to="/perfil" onClick={handleNavClick}>Perfil</Link>}
+          */}
         </div>
         <div className="nav-right">
           <button onClick={toggleTheme}>
-            {theme === 'light' ? 'Modo Oscuro 🌙' : 'Modo Claro ☀️'}
+            {theme === 'light' ? '🌙' : '☀️'}
           </button>
           {username ? (
             <button onClick={handleLogout} className="logoutButtonApp">
@@ -96,7 +101,9 @@ function AppContent() {
           ) : (
             <>
               <Link to="/login" onClick={handleNavClick}>Login</Link>
+              {/*
               <Link to="/register" onClick={handleNavClick}>Registro</Link>
+              */}
             </>
           )}
         </div>

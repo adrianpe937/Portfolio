@@ -37,7 +37,7 @@ const Portfolio = () => {
       <div className="hero-banner" id="hero">
         <div className="hero-overlay"></div>
         <div className="hero-content">
-          <h1 className="animated-title">Mi Portfolio</h1>
+          <h1 className="animated-title">Adrián Peña</h1>
           <p className="hero-subtitle">Desarrollo Web & Ciberseguridad</p>
           {/* Botón para bajar suavemente a Acerca de mí */}
           <a
@@ -66,9 +66,9 @@ const Portfolio = () => {
           <div className="header-content">
             <h2>Acerca de mí</h2>
             <p className="bio">
-              ¡Hola! Soy <strong>adrianpe937</strong>, un desarrollador junior apasionado por la <strong>ciberseguridad</strong> y el <strong>desarrollo web</strong>. Me encanta aprender nuevas tecnologías y crear soluciones modernas y seguras. 
+              ¡Hola! Soy <strong>Adrián Peña</strong>, un desarrollador web apasionado por la <strong>desarrollo web</strong> y la <strong>ciberseguridad</strong>. Me encanta aprender nuevas tecnologías y crear soluciones modernas y seguras. 
               <br /><br />
-              Tengo experiencia en el desarrollo de aplicaciones web con <strong>React</strong> y <strong>Node.js</strong>, así como en la implementación de buenas prácticas de seguridad. Mi objetivo es seguir creciendo profesionalmente y aportar valor en proyectos innovadores.
+              Gracias a proyectos que he ido realizado he conseguido aprender lenguajes como <strong>React</strong>,<strong>Node.js</strong>, <strong>Java</strong>, <strong>Laravel</strong> así como en la implementación de buenas prácticas de seguridad. Mi objetivo es seguir creciendo profesionalmente y aportar valor en proyectos innovadores.
             </p>
             <div className="skills-container">
               <span className="skill-tag">Desarrollo Web</span>

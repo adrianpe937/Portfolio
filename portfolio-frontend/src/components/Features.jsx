@@ -27,10 +27,11 @@ const technologies = [
   { title: "Node.js" },
   { title: "HTML5" },
   { title: "TypeScript" },
+  { title: "Java" },
+  { title: "Laravel" },
   { title: "Next.js" },
   { title: "MongoDB" }
 ];
-
 const features = [
   { icon: <FaLaptopCode />, title: "CSS3" },
   { icon: <FaShieldAlt />, title: "JavaScript" },
@@ -46,7 +47,10 @@ const Features = () => {
   return (
     <div className="tech-showcase">
       <h2 className="tech-showcase-title">Tecnologías</h2>
-      <p> Slider donde se muestran las tecnologias que he usado en mis proyectos</p>
+      <p className="bio">
+        <strong> Gracias a todos mis proyectos he conseguido aprender sobre las siguientes tecnologías</strong>
+      </p>
+      
       <div 
         className={`tech-marquee ${isPaused ? 'paused' : ''}`}
         onMouseEnter={() => setIsPaused(true)}

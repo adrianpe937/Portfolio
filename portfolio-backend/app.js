@@ -5,6 +5,8 @@ require('dotenv').config();
 
 const authRoutes = require('./routes/authRoutes');
 const portfolioRoutes = require('./routes/portfolioRoutes');
+const otherProjectsRoutes = require('./routes/otherProjectsRoutes');
+const githubRoutes = require('./routes/githubRoutes');
 
 const app = express();
 
@@ -35,6 +37,8 @@ app.get('/test', (req, res) => {
 // ✅ Rutas de la API
 app.use('/api/auth', authRoutes);
 app.use('/api/portfolio', portfolioRoutes);
+app.use('/api/otherprojects', otherProjectsRoutes);
+app.use('/api/github', githubRoutes);
 
 // ✅ Conexión a MongoDB
 mongoose.connect(process.env.MONGO_URI, {

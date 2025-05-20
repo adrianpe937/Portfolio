@@ -5,6 +5,11 @@ import Swal from "sweetalert2";
 // Cambia esto por tu usuario real de GitHub si es diferente
 const GITHUB_USERNAME = "adrianpe937";
 
+// ⚠️ DEBUG: Muestra si el token está presente (elimina este log en producción)
+console.log("GITHUB_TOKEN:", process.env.REACT_APP_GITHUB_TOKEN);
+
+const GITHUB_TOKEN = process.env.REACT_APP_GITHUB_TOKEN;
+
 // Asocia aquí el nombre del repo con la imagen que quieras mostrar
 const projectImages = {
   "portfolio": "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80",
@@ -43,8 +48,16 @@ const Projects = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&sort=updated`)
+    fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&sort=updated`, {
+      headers: GITHUB_TOKEN
+        ? { Authorization: `Bearer ${GITHUB_TOKEN}` }
+        : undefined
+    })
       .then(res => {
+        // Manejo de error 403 (rate limit)
+        if (res.status === 403) {
+          throw new Error("GitHub API rate limit excedido. Intenta de nuevo más tarde o usa un token personal.");
+        }
         if (!res.ok) throw new Error("No se pudieron cargar los proyectos de GitHub");
         return res.json();
       })
@@ -71,7 +84,7 @@ const Projects = () => {
         setRepoLanguages(langs);
       })
       .catch(err => {
-        setError("Error al cargar los proyectos de GitHub");
+        setError(err.message || "Error al cargar los proyectos de GitHub");
         setLoading(false);
       });
   }, []);
@@ -95,7 +108,33 @@ const Projects = () => {
           }
         });
         setCustomImages(images);
+      })
+      .catch(err => {
+        // Manejo de error de red
+        setCustomImages({});
+        // Opcional: setError("No se pudo conectar con el backend para cargar imágenes personalizadas");
       });
+  }, []);
+
+  // Cargar imágenes personalizadas de proyectos de GitHub desde la colección github
+  useEffect(() => {
+    fetch('http://localhost:5000/api/github', {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        // data debe ser un array de objetos { repo, imageUrl }
+        const images = {};
+        (Array.isArray(data) ? data : []).forEach(item => {
+          if (item.repo && item.imageUrl) {
+            images[item.repo.toLowerCase()] = item.imageUrl;
+          }
+        });
+        setCustomImages(images);
+      })
+      .catch(() => setCustomImages({}));
   }, []);
 
   // Detectar si el usuario es admin leyendo el token
@@ -113,14 +152,13 @@ const Projects = () => {
 
   // Cargar proyectos personalizados (sección: "Otros proyectos")
   useEffect(() => {
-    fetch('http://localhost:5000/api/portfolio')
+    fetch('http://localhost:5000/api/otherprojects')
       .then(res => res.json())
       .then(data => {
-        const arr = Array.isArray(data) ? data : data.data || [];
-        // Filtra por sección "Otros proyectos"
-        setCustomProjects(arr.filter(item =>
-          item.section && item.section.toLowerCase().includes("otros proyectos")
-        ));
+        setCustomProjects(Array.isArray(data) ? data : []);
+      })
+      .catch(err => {
+        setCustomProjects([]);
       });
   }, []);
 
@@ -139,7 +177,7 @@ const Projects = () => {
     );
   };
 
-  // Handler para cambiar la imagen y guardar en la base de datos
+  // Handler para cambiar la imagen y guardar en la colección github
   const handleImageChange = (repo, idx) => e => {
     const file = e.target.files[0];
     if (file) {
@@ -150,10 +188,11 @@ const Projects = () => {
           ...prev,
           [repo.name.toLowerCase()]: imageData
         }));
+
         try {
           const token = localStorage.getItem('token');
-          let docId = null;
-          const res = await fetch('http://localhost:5000/api/portfolio', {
+          // Busca si ya existe un documento github para este repo
+          const res = await fetch('http://localhost:5000/api/github', {
             headers: { 'Authorization': `Bearer ${token}` }
           });
           if (!res.ok) {
@@ -161,15 +200,13 @@ const Projects = () => {
             return;
           }
           const docs = await res.json();
-          const arr = Array.isArray(docs) ? docs : docs.data || [];
-          const found = arr.find(item => item.section && item.section.toLowerCase() === repo.name.toLowerCase());
-          if (found) {
-            docId = found._id;
-          }
+          const arr = Array.isArray(docs) ? docs : [];
+          const found = arr.find(item => item.repo && item.repo.toLowerCase() === repo.name.toLowerCase());
+
           let saveRes;
-          if (docId) {
+          if (found) {
             // Actualiza el documento existente
-            saveRes = await fetch(`http://localhost:5000/api/portfolio/${docId}`, {
+            saveRes = await fetch(`http://localhost:5000/api/github/${found._id}`, {
               method: 'PUT',
               headers: {
                 'Content-Type': 'application/json',
@@ -178,16 +215,17 @@ const Projects = () => {
               body: JSON.stringify({ imageUrl: imageData }),
             });
           } else {
-            // Crea un nuevo documento solo con la imagen y el nombre del repo
-            saveRes = await fetch('http://localhost:5000/api/portfolio', {
+            // Crea un documento nuevo solo en la colección github
+            saveRes = await fetch('http://localhost:5000/api/github', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
               },
-              body: JSON.stringify({ section: repo.name, imageUrl: imageData }),
+              body: JSON.stringify({ repo: repo.name, imageUrl: imageData }),
             });
           }
+
           if (!saveRes.ok) {
             if (saveRes.status === 413) {
               alert("La imagen es demasiado grande. Por favor, selecciona una imagen más pequeña.");
@@ -218,7 +256,6 @@ const Projects = () => {
   const handleAddCustom = async () => {
     const token = localStorage.getItem('token');
     const nuevo = {
-      section: "Otros proyectos",
       content: {
         title: "Nuevo proyecto",
         desc: "Descripción...",
@@ -227,7 +264,7 @@ const Projects = () => {
         imageUrl: ""
       }
     };
-    const res = await fetch('http://localhost:5000/api/portfolio', {
+    const res = await fetch('http://localhost:5000/api/otherprojects', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -265,7 +302,7 @@ const Projects = () => {
 
     const token = localStorage.getItem('token');
     const proj = customEdit;
-    const res = await fetch(`http://localhost:5000/api/portfolio/${proj._id}`, {
+    const res = await fetch(`http://localhost:5000/api/otherprojects/${proj._id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -297,7 +334,7 @@ const Projects = () => {
 
     const token = localStorage.getItem('token');
     const proj = customProjects[idx];
-    const res = await fetch(`http://localhost:5000/api/portfolio/${proj._id}`, {
+    const res = await fetch(`http://localhost:5000/api/otherprojects/${proj._id}`, {
       method: 'DELETE',
       headers: { 'Authorization': `Bearer ${token}` }
     });
@@ -480,6 +517,9 @@ const Projects = () => {
   return (
     <>
       <h2 className="section-title">Mis proyectos de Github</h2>
+      <p>Estos son algunos de los proyectos personales que me han permitido poner en práctica lo aprendido, experimentar con nuevas tecnologías y resolver problemas reales de forma creativa.
+
+Mi perfil en GitHub refleja esa evolución como desarrollador: desde aplicaciones simples en consola hasta sistemas completos con interfaces gráficas, bases de datos, frameworks modernos y enfoque en la seguridad.</p>
       {loading && <div style={{ textAlign: "center", margin: "2rem" }}>Cargando proyectos de GitHub...</div>}
       {error && <div style={{ color: "red", textAlign: "center" }}>{error}</div>}
       <div className="projects-grid">
@@ -610,6 +650,7 @@ const Projects = () => {
       </div>
       {/* Otros proyectos */}
       <h2 className="section-title" style={{ marginTop: "3rem" }}>Otros proyectos</h2>
+      <p>Además de mis proyectos personales, también he participado en el desarrollo de diversas aplicaciones, Estos proyectos me permitieron trabajar en contextos reales, cumpliendo con requisitos de clientes y plazos definidos, aprendiendo a comunicarme con personas no técnicas y adaptando el desarrollo a necesidades específicas.</p>
       {isAdmin && (
         <button
           className="add-button"

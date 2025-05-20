@@ -25,6 +25,8 @@
   max-width: 1200px;
   margin: 0 auto 3rem auto;
   width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
 }
 
 @media (max-width: 900px) {
@@ -36,13 +38,13 @@
   }
 }
 
-/* Tarjeta de experiencia: mismo ancho y alto siempre */
+/* Tarjeta de experiencia: más grande, sin scroll lateral, y más texto visible */
 .experience-card {
   margin-bottom: 3rem;
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-  background: linear-gradient(to bottom right, #2A2B38, #1E1F26);
+  background: linear-gradient(135deg, #2a2b38, #1e1f26);
   border: 1px solid rgba(255, 255, 255, 0.08);
   cursor: grab;
   transition: transform 0.18s cubic-bezier(.4,2,.6,1), opacity 0.18s;
@@ -51,42 +53,50 @@
   transform: translateY(30px);
   animation-delay: calc(var(--i, 0) * 0.15s);
   width: 100%;
-  height: 480px; /* Fijo para todas en PC */
+  height: 800px;
+  min-height: 800px;
+  max-height: 800px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
   /* Asegura que el contenido no se desborde */
   min-height: 0;
+  box-sizing: border-box;
+  /* Evita scroll lateral */
+  overflow-x: hidden;
 }
 
 @media (max-width: 900px) {
   .experience-card {
     max-width: 98vw !important;
     min-width: 0;
-    min-height: 420px;
-    height: 420px;
+    min-height: 600px;
+    height: 600px;
+    max-height: 600px;
     border-radius: 14px !important;
     margin: 0 auto 1.2rem auto;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
+    overflow-x: hidden;
   }
 }
-
 @media (max-width: 600px) {
   .experience-card {
     max-width: 99vw !important;
     min-width: 0;
-    min-height: 340px;
-    height: 340px;
+    min-height: 440px;
+    height: 440px;
+    max-height: 440px;
     border-radius: 10px !important;
     margin: 0 auto 1rem auto;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
+    overflow-x: hidden;
   }
 }
 
@@ -142,9 +152,9 @@
   padding: 2rem;
   position: relative;
   min-height: 0;
-  /* Hace el contenido desplazable si es muy largo */
-  overflow-y: auto;
-  max-height: calc(100% - 210px); /* Altura de la tarjeta menos la imagen en PC */
+  overflow-y: visible; /* Quita el scroll vertical */
+  max-height: none;    /* Sin límite de altura interna */
+  overflow-x: hidden;
 }
 
 @media (max-width: 900px) {
@@ -295,13 +305,14 @@ section:nth-child(even) {
   .experience-card {
     max-width: 98vw !important;
     min-width: 0;
-    min-height: 420px;
-    height: 420px; /* Mucho más alto en móvil/tablet */
+    min-height: 600px;
+    height: 600px; /* Mucho más alto en móvil/tablet */
     border-radius: 14px !important;
     margin: 0 auto 1.2rem auto;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    overflow-x: hidden;
   }
   .experience-image {
     height: 180px !important;
@@ -331,13 +342,14 @@ section:nth-child(even) {
   .experience-card {
     max-width: 99vw !important;
     min-width: 0;
-    min-height: 340px;
-    height: 340px; /* Mucho más alto en móvil pequeño */
+    min-height: 440px;
+    height: 440px; /* Mucho más alto en móvil pequeño */
     border-radius: 10px !important;
     margin: 0 auto 1rem auto;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    overflow-x: hidden;
   }
   .experience-image {
     height: 140px !important;
@@ -420,3 +432,187 @@ input.experience-title {
   box-shadow: 0 0 0 4px #e53e3e, var(--card-shadow);
   border: 2px solid #e53e3e;
 }
+
+/* Modal para experiencia (popup ver más) - color adaptado */
+.experience-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.experience-modal-content {
+  background: #23223a;
+  color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+  max-width: 600px;
+  width: 95%;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 36px;
+  position: relative;
+  border: 2px solid #6a3de8;
+}
+
+.experience-modal-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 18px;
+  background: #6a3de8;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.experience-modal-content h2 {
+  margin-top: 0;
+  color: #fff;
+}
+
+.experience-modal-content .modal-body {
+  white-space: pre-line;
+  color: #e0e0e0;
+}
+
+/* Mejora visual del texto de las tarjetas de experiencia */
+.experience-description-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 18;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 0;
+  word-break: break-word;
+  position: relative;
+  padding-bottom: 3.2rem;
+  color: #f5f5fa;
+  font-size: 1.18rem;
+  line-height: 1.75;
+  font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+  letter-spacing: 0.01em;
+  background: transparent;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.13);
+  /* Añade separación entre párrafos */
+}
+
+.experience-description-clamp p {
+  margin: 0 0 1.1em 0;
+  font-size: 1.18rem;
+  line-height: 1.75;
+}
+
+.experience-description-clamp strong,
+.experience-description-clamp b {
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.experience-description-clamp h4,
+.experience-description-clamp h3 {
+  color: #b6aaff;
+  font-size: 1.15em;
+  font-weight: 700;
+  margin: 1.1em 0 0.5em 0;
+  letter-spacing: 0.01em;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  border-left: 3px solid #6a3de8;
+  padding-left: 0.7em;
+}
+
+.experience-description-clamp ul,
+.experience-description-clamp ol {
+  margin: 0.7em 0 1.1em 1.5em;
+  padding-left: 1.2em;
+}
+
+.experience-description-clamp li {
+  margin-bottom: 0.5em;
+  font-size: 1.08rem;
+}
+
+.experience-description-clamp .subtitle {
+  display: block;
+  color: #a7a7d9;
+  font-size: 1.07em;
+  font-weight: 600;
+  margin: 0.7em 0 0.3em 0;
+  letter-spacing: 0.01em;
+}
+
+/* Mejora el aspecto de los títulos en las tarjetas */
+.experience-title {
+  font-size: 2rem;
+  color: #fff;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.01em;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+/* Mejora el aspecto del header de la tarjeta */
+.experience-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.2rem;
+  gap: 0.7rem;
+}
+
+/* Mejora el botón "Ver más" */
+.experience-see-more-btn {
+  background: linear-gradient(90deg, #6a3de8 60%, #4b28c7 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 22px;
+  font-size: 1.08rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(106,61,232,0.12);
+  margin-top: 0.5rem;
+  transition: background 0.2s, transform 0.15s;
+  letter-spacing: 0.02em;
+}
+.experience-see-more-btn:hover,
+.experience-see-more-btn:focus {
+  background: linear-gradient(90deg, #4b28c7 60%, #6a3de8 100%);
+  transform: translateY(-2px) scale(1.04);
+}
+
+/* h3 para bloques que terminan en : */
+.experience-block-h3 {
+  color: #b6aaff;
+  font-size: 1.25em;
+  font-weight: 700;
+  margin: 1.1em 0 0.5em 0;
+  letter-spacing: 0.01em;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  border-left: 3px solid #6a3de8;
+  padding-left: 0.7em;
+  background: transparent;
+}
+
+/* ¿Qué hice? destacado */
+.experience-block-quehice {
+  display: block;
+  color: #ffb347;
+  font-weight: 700;
+  font-size: 1.13em;
+  margin: 1em 0 0.7em 0;
+  letter-spacing: 0.01em;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  background: transparent;
+}
+
+/* ...ya existen los estilos para .experience-block-subtitle, .experience-block-list, .experience-block-paragraph... */

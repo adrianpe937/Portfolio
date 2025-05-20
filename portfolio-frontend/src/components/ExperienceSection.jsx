@@ -22,6 +22,8 @@ const ExperienceSection = ({
   const [draggedIndex, setDraggedIndex] = useState(null);
   const [dragOverIndex, setDragOverIndex] = useState(null);
   const dragItem = useRef(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState({ title: "", content: "" });
 
   // Detectar si el usuario es admin leyendo el token
   let isAdmin = false;
@@ -62,9 +64,44 @@ const ExperienceSection = ({
     return edit && edit[field] !== undefined ? edit[field] : fallback;
   };
 
+  // Modal simple para mostrar contenido completo
+  const ExperienceModal = ({ open, onClose, title, content }) => {
+    if (!open) return null;
+    return (
+      <div
+        className="experience-modal-overlay"
+        onClick={onClose}
+        tabIndex={-1}
+      >
+        <div
+          className="experience-modal-content"
+          onClick={e => e.stopPropagation()}
+        >
+          <button
+            className="experience-modal-close-btn"
+            onClick={onClose}
+            aria-label="Cerrar"
+          >
+            ×
+          </button>
+          {/* Título siempre fijo arriba */}
+          <div className="experience-modal-title-fixed">
+            <h2>{title}</h2>
+          </div>
+          <div className="modal-body experience-modal-body-scroll">
+            {content}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <section className="mi-experiencia-section" data-aos="fade-up">
-      <h2 className="section-title">Mi Experiencia</h2>
+      <h2 className="section-title">Mi experiencia como desarrollador</h2>
+      <p>Desde que comencé en el mundo del desarrollo, he tenido la oportunidad de participar en proyectos reales que me han permitido aprender de forma práctica y profundizar en distintas áreas como la ciberseguridad, el desarrollo web y la administración de sistemas. Aquí te cuento un poco más de cada experiencia:
+
+</p>
       {/* Solo mostrar botones si es admin */}
       {isAdmin && (
         <div className="top-buttons">
@@ -115,6 +152,7 @@ const ExperienceSection = ({
           {datosPortfolio.map(({ _id, section, content, imageUrl }, i) => {
             const isSelected = idsSeleccionados.includes(_id);
             const editedTitle = getEditedValue(_id, "section", section);
+            const editedContent = getEditedValue(_id, "content", content);
             const editedImage = getEditedValue(_id, "imageUrl", imageUrl);
 
             let customImage = editedImage;
@@ -131,6 +169,149 @@ const ExperienceSection = ({
                 customImage = "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80";
               }
             }
+
+            // Calcula el texto de la tarjeta una sola vez
+            const cardText = typeof editedContent === "string"
+              ? editedContent
+              : (Array.isArray(editedContent) ? editedContent.join("\n") : (editedContent && typeof editedContent === "object" ? Object.values(editedContent).join("\n") : ""));
+
+            // Procesa el texto para mostrar títulos y ¿Qué hice? en la tarjeta (previsualización)
+            function renderPreviewContent(text) {
+              if (!text) return null;
+              // Divide por saltos de línea simples o dobles
+              const blocks = text.split(/\n+/g);
+              let lines = [];
+              let count = 0;
+              for (let idx = 0; idx < blocks.length; idx++) {
+                if (count >= 18) break; // Limita a 18 líneas aprox
+                const trimmed = blocks[idx].trim();
+                if (!trimmed) continue;
+                // h3 si termina en ":":
+                if (trimmed.endsWith(":")) {
+                  lines.push(
+                    <h3 key={idx} className="experience-block-h3">
+                      {trimmed}
+                    </h3>
+                  );
+                  count++;
+                  continue;
+                }
+                // ¿Qué hice? o variantes, estilo especial
+                if (/¿?que hice\??/i.test(trimmed.replace(/\s/g, ""))) {
+                  lines.push(
+                    <div key={idx} className="experience-block-quehice">
+                      {trimmed}
+                    </div>
+                  );
+                  count++;
+                  continue;
+                }
+                // Subtítulo especial (ej: Tecnologías usadas)
+                if (/^tecnolog[ií]as usadas:?/i.test(trimmed)) {
+                  lines.push(
+                    <span key={idx} className="experience-block-subtitle">
+                      {trimmed}
+                    </span>
+                  );
+                  count++;
+                  continue;
+                }
+                // Lista: línea con varias comas y no demasiado larga
+                if (trimmed.split(",").length > 2 && trimmed.length < 120) {
+                  lines.push(
+                    <ul key={idx} className="experience-block-list">
+                      {trimmed.split(",").map((item, i) =>
+                        <li key={i}>{item.trim()}</li>
+                      )}
+                    </ul>
+                  );
+                  count++;
+                  continue;
+                }
+                // Si el bloque contiene varios puntos, sepáralos visualmente
+                if (trimmed.split(". ").length > 1 && trimmed.length > 40) {
+                  trimmed.split(". ").forEach((sentence, j, arr) => {
+                    if (count >= 18) return;
+                    const withDot = sentence.endsWith(".") || j === arr.length - 1 ? sentence : sentence + ".";
+                    lines.push(
+                      <p key={idx + "-p-" + j} className="experience-block-paragraph" style={{ marginBottom: "0.7em" }}>
+                        {withDot}
+                      </p>
+                    );
+                    count++;
+                  });
+                  continue;
+                }
+                // Párrafo normal
+                lines.push(
+                  <p key={idx} className="experience-block-paragraph">{trimmed}</p>
+                );
+                count++;
+              }
+              return lines;
+            }
+
+            // Para el modal: renderizado avanzado (títulos, listas, etc.)
+            function renderExperienceContent(text) {
+              if (!text) return null;
+              const blocks = text.split(/\n+/g);
+              return blocks.map((block, idx) => {
+                const trimmed = block.trim();
+                if (trimmed.endsWith(":")) {
+                  return (
+                    <h3 key={idx} className="experience-block-h3">
+                      {trimmed}
+                    </h3>
+                  );
+                }
+                if (/¿?que hice\??/i.test(trimmed.replace(/\s/g, ""))) {
+                  return (
+                    <div key={idx} className="experience-block-quehice">
+                      {trimmed}
+                    </div>
+                  );
+                }
+                if (/^tecnolog[ií]as usadas:?/i.test(trimmed)) {
+                  return (
+                    <span key={idx} className="experience-block-subtitle">
+                      {trimmed}
+                    </span>
+                  );
+                }
+                if (trimmed.split(",").length > 2 && trimmed.length < 120) {
+                  return (
+                    <ul key={idx} className="experience-block-list">
+                      {trimmed.split(",").map((item, i) =>
+                        <li key={i}>{item.trim()}</li>
+                      )}
+                    </ul>
+                  );
+                }
+                if (trimmed.split(". ").length > 1 && trimmed.length > 40) {
+                  return trimmed.split(". ").map((sentence, j, arr) => {
+                    const withDot = sentence.endsWith(".") || j === arr.length - 1 ? sentence : sentence + ".";
+                    return (
+                      <p key={j} className="experience-block-paragraph" style={{ marginBottom: "0.7em" }}>
+                        {withDot}
+                      </p>
+                    );
+                  });
+                }
+                return (
+                  <p key={idx} className="experience-block-paragraph">{trimmed}</p>
+                );
+              });
+            }
+
+            // Render editable content as JSX for card
+            const contentJSX = (
+              <div className="experience-description-clamp">
+                {renderExperienceContent(cardText)}
+              </div>
+            );
+            const contentText = cardText;
+
+            const maxLines = 18;
 
             return (
               <div
@@ -236,16 +417,49 @@ const ExperienceSection = ({
                         maxLength={60}
                       />
                     ) : (
-                      <h3 className="experience-title">{editedTitle}</h3>
+                      <h3 className="experience-title" style={{
+                        position: "static",
+                        background: "none",
+                        zIndex: 1,
+                        marginBottom: "0.5rem"
+                      }}>{editedTitle}</h3>
                     )}
                   </div>
-                  <div className="section-content-wrapper">
-                    {renderEditableContent(editedTitle, content, _id)}
+                  <div className="section-content-wrapper" style={{
+                    maxHeight: "none",
+                    overflow: "visible",
+                    position: "relative"
+                  }}>
+                    {/* Previsualización: renderiza títulos y ¿Qué hice? */}
+                    <div className="experience-description-clamp">
+                      {renderPreviewContent(cardText)}
+                    </div>
+                    {cardText && cardText.length > 250 && (
+                      <div style={{
+                        width: "100%",
+                        textAlign: "right",
+                        marginTop: 12
+                      }}>
+                        <button
+                          className="experience-see-more-btn"
+                          onClick={() => setModalOpen(true) || setModalContent({ title: editedTitle, content: renderExperienceContent(cardText) })}
+                        >
+                          Ver más
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
             );
           })}
+          {/* Modal para mostrar experiencia completa */}
+          <ExperienceModal
+            open={modalOpen}
+            onClose={() => setModalOpen(false)}
+            title={modalContent.title}
+            content={modalContent.content}
+          />
         </div>
       )}
     </section>

@@ -1,0 +1,34 @@
+[33mdb8c3f3[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m python con .env global
+[33mfddcbe6[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m portfolio final
+[33me22e185[m texto editable
+[33m9a05012[m casi terminado portfolio
+[33m094860e[m archivos scss sin terminar
+[33m6de38ec[m admin sin editar usuarios normales y css pulido
+[33mc5484d9[m Merge branch 'main' of https://github.com/adrianpe937/Portfolio
+[33m823218d[m aa
+[33m4e2fd56[m fotos proyectos
+[33mc53d1d4[m algo de css
+[33mf83470d[m header con enlaces internos
+[33m2b250ff[m cambiar portfolio.css
+[33m2f77aac[m drag and drop bien
+[33m156ddbc[m drag and drop mas o menos con estilo
+[33m3301a96[m drag and drop y funcionalidades de tarjetas
+[33mc30eba8[m mas css
+[33mac691fb[m css terminado
+[33m6184a10[m css parcial
+[33m35ba1b5[m estilo parcial
+[33mb4ebb05[m login con nombre de usuario en el appcontent
+[33m79b1032[m base de datos en mongodb atlas con registro y login bien
+[33maafc173[m perfil perfecto a la hora de guardar cambios
+[33ma3fd48f[m intento de hacer publicaciones en twitter
+[33m4ff21a4[m css parcial modo oscuro/claro
+[33m0c60101[m ver usuarios registrados
+[33m339271f[m no se ven los usuarios pero tengo diferenciacion de admin
+[33mb0cec69[m login con portfolio, sin que el usuario se quite en el nav
+[33m6b8e80a[m cerrar sesion y quiar nombre de usuario
+[33mfcd3d36[m actualizacion del perfil con repositorios de github
+[33m276c6b5[m login/registro + api de github para coger los repositorios publicos
+[33m64ae56d[m forntend funcionando
+[33md92c9bc[m configuracion
+[33m6782bfd[m prueba
+[33mb7ccbac[m Estructura

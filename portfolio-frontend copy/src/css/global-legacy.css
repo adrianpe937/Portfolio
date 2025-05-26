@@ -1,0 +1,51 @@
+/* Este archivo contiene el CSS original de Portfolio.css para mantener la funcionalidad y estilos previos.
+   Puedes importar este archivo en Portfolio.jsx o en tu index.js para no perder ningún estilo previo. */
+
+/* --------------------- */
+/* VARIABLES */
+/* --------------------- */
+:root {
+  --bg-color: #f8f9fa;
+  --text-color: #333333;
+  --primary-color: #6a3de8;
+  --primary-color-light: #8c68f0;
+  --secondary-color: #38b2ac;
+  --accent-color: #f8d57e;
+  --card-bg: #ffffff;
+  --card-border: rgba(106, 61, 232, 0.1);
+  --card-shadow: 0 10px 30px rgba(106, 61, 232, 0.1);
+  --card-shadow-hover: 0 15px 40px rgba(106, 61, 232, 0.15);
+  --button-bg: #6a3de8;
+  --button-hover: #5429d0;
+  --danger-color: #e53e3e;
+  --danger-color-dark: #c53030;
+  --light-text-color: #666666;
+  --animation-duration: 0.8s;
+  --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+  --section-spacing: 5rem;
+  --element-spacing: 2rem;
+  --border-radius-sm: 8px;
+  --border-radius-md: 16px;
+  --border-radius-lg: 24px;
+  --border-radius-xl: 32px;
+  --primary-gradient: linear-gradient(135deg, var(--primary-color), var(--primary-color-light));
+  --text-gradient: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  --accent-gradient: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+}
+
+/* ...aquí puedes pegar el resto del CSS original de Portfolio.css, incluyendo secciones, grids, animaciones, etc... */
+
+/* Ejemplo de sección global */
+.portfolio-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* ...existing code from original Portfolio.css... */
+
+/* Si tienes media queries, animaciones, helpers, etc., inclúyelos aquí también. */
+
+/* --------------------- */
+/* FIN DEL CSS LEGACY */
+/* --------------------- */

@@ -1,0 +1,616 @@
+.mi-experiencia-section {
+  max-width: 1800px;
+  margin: 0 auto 3rem auto;
+  padding: 3rem 1rem;
+  background: var(--card-bg);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--card-shadow);
+  /* Quita el borde para evitar doble borde */
+  /* border: 1px solid var(--card-border); */
+  position: relative;
+  overflow: visible;
+}
+
+/* Evita doble borde en la sección principal */
+.mi-experiencia-section {
+  /* Elimina el borde lateral decorativo de la sección principal */
+  border-left: none !important;
+  border-right: none !important;
+}
+
+.mi-experiencia-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Siempre 2 columnas en PC */
+  gap: 2.5rem;
+  max-width: 1200px;
+  margin: 0 auto 3rem auto;
+  width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+@media (max-width: 900px) {
+  .mi-experiencia-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem;
+    max-width: 100vw;
+    padding: 0 2vw;
+  }
+}
+
+/* Tarjeta de experiencia: más grande, sin scroll lateral, y más texto visible */
+.experience-card {
+  margin-bottom: 3rem;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, #2a2b38, #1e1f26);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: grab;
+  transition: transform 0.18s cubic-bezier(.4,2,.6,1), opacity 0.18s;
+  animation: slideUpFade 0.8s var(--transition-timing) forwards;
+  opacity: 0;
+  transform: translateY(30px);
+  animation-delay: calc(var(--i, 0) * 0.15s);
+  width: 100%;
+  height: 800px;
+  min-height: 800px;
+  max-height: 800px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  /* Asegura que el contenido no se desborde */
+  min-height: 0;
+  box-sizing: border-box;
+  /* Evita scroll lateral */
+  overflow-x: hidden;
+}
+
+@media (max-width: 900px) {
+  .experience-card {
+    max-width: 98vw !important;
+    min-width: 0;
+    min-height: 600px;
+    height: 600px;
+    max-height: 600px;
+    border-radius: 14px !important;
+    margin: 0 auto 1.2rem auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    overflow-x: hidden;
+  }
+}
+@media (max-width: 600px) {
+  .experience-card {
+    max-width: 99vw !important;
+    min-width: 0;
+    min-height: 440px;
+    height: 440px;
+    max-height: 440px;
+    border-radius: 10px !important;
+    margin: 0 auto 1rem auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    overflow-x: hidden;
+  }
+}
+
+/* Imagen: tamaño fijo y siempre igual, no importa la imagen */
+.experience-image {
+  width: 100%;
+  height: 210px;
+  min-height: 210px;
+  max-height: 210px;
+  border-radius: 14px 14px 0 0;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  flex-grow: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #222;
+}
+.experience-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 14px 14px 0 0;
+  display: block;
+}
+
+@media (max-width: 900px) {
+  .experience-image {
+    height: 180px !important;
+    min-height: 180px !important;
+    max-height: 180px !important;
+    border-radius: 14px 14px 0 0 !important;
+  }
+  .experience-image img {
+    border-radius: 14px 14px 0 0 !important;
+  }
+}
+@media (max-width: 600px) {
+  .experience-image {
+    height: 120px !important;
+    min-height: 120px !important;
+    max-height: 120px !important;
+    border-radius: 10px 10px 0 0 !important;
+  }
+  .experience-image img {
+    border-radius: 10px 10px 0 0 !important;
+  }
+}
+
+.experience-content {
+  flex: 1 1 0;
+  padding: 2rem;
+  position: relative;
+  min-height: 0;
+  overflow-y: visible; /* Quita el scroll vertical */
+  max-height: none;    /* Sin límite de altura interna */
+  overflow-x: hidden;
+}
+
+@media (max-width: 900px) {
+  .experience-content {
+    max-height: calc(100% - 180px); /* Altura de la tarjeta menos la imagen en tablet */
+  }
+}
+@media (max-width: 600px) {
+  .experience-content {
+    max-height: calc(100% - 120px); /* Altura de la tarjeta menos la imagen en móvil */
+  }
+}
+
+/* Opcional: mejora la barra de scroll interna */
+.experience-content::-webkit-scrollbar {
+  width: 8px;
+}
+.experience-content::-webkit-scrollbar-thumb {
+  background: var(--primary-color, #6a3de8);
+  border-radius: 4px;
+}
+
+.experience-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.experience-title {
+  font-size: 1.6rem;
+  color: #fff;
+  margin-bottom: 0.3rem;
+}
+
+
+.delete-btn { 
+  background: linear-gradient(135deg, var(--danger-color), var(--danger-color-dark));
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  padding: 0.6rem 1.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  box-shadow: 0 4px 12px rgba(229, 62, 62, 0.10);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
+  outline: none;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.delete-btn:hover,
+.delete-btn:focus {
+  background: linear-gradient(135deg, #c53030, #e53e3e 80%);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(229, 62, 62, 0.18);
+  transform: translateY(-2px) scale(1.04);
+}
+
+.delete-btn .button-icon {
+  font-size: 1.1rem;
+  margin-right: 0.3rem;
+}
+
+/* Ajuste para el botón Eliminar todo para que NO quede debajo de las tarjetas */
+.mi-experiencia-section > .delete-todo-btn-row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  margin-top: -1.2rem;
+  gap: 1rem;
+}
+
+/* Si quieres que el botón esté alineado con los otros botones, puedes quitar el margin-top negativo */
+.delete-todo-btn-row .delete-btn {
+  background: linear-gradient(135deg, var(--danger-color), var(--danger-color-dark));
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  padding: 0.6rem 1.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  box-shadow: 0 4px 12px rgba(229, 62, 62, 0.10);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
+  outline: none;
+  margin: 0;
+}
+
+.delete-todo-btn-row .delete-btn:hover,
+.delete-todo-btn-row .delete-btn:focus {
+  background: linear-gradient(135deg, #c53030, #e53e3e 80%);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(229, 62, 62, 0.18);
+  transform: translateY(-2px) scale(1.04);
+}
+
+section {
+  padding: 3rem;
+  border-radius: var(--border-radius-lg);
+  background: var(--card-bg);
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--card-border);
+  transition: background-color 0.6s var(--transition-timing), 
+              box-shadow 0.6s var(--transition-timing), 
+              border-color 0.6s var(--transition-timing), 
+              transform 0.4s var(--transition-timing);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 3rem;
+}
+section:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--card-shadow-hover);
+}
+section:nth-child(odd) {
+  border-left: 5px solid var(--primary-color);
+}
+section:nth-child(even) {
+  border-right: 5px solid var(--secondary-color);
+}
+
+/* ...drag and drop, animaciones, media queries de experiencia... */
+/* Responsive: 1 columna en móvil */
+@media (max-width: 900px) {
+  .mi-experiencia-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.2rem !important;
+    max-width: 98vw !important;
+    padding: 0 2vw;
+  }
+}
+
+
+
+@media (max-width: 900px) {
+  .mi-experiencia-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.2rem !important;
+    max-width: 98vw !important;
+    padding: 0 2vw;
+  }
+  .experience-card {
+    max-width: 98vw !important;
+    min-width: 0;
+    min-height: 600px;
+    height: 600px; /* Mucho más alto en móvil/tablet */
+    border-radius: 14px !important;
+    margin: 0 auto 1.2rem auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow-x: hidden;
+  }
+  .experience-image {
+    height: 180px !important;
+    min-height: 180px !important;
+    max-height: 180px !important;
+    border-radius: 14px 14px 0 0 !important;
+  }
+  .experience-image img {
+    border-radius: 14px 14px 0 0 !important;
+  }
+  .experience-content {
+    padding: 1.2rem 1rem !important;
+    font-size: 1.08rem !important;
+    flex: 1;
+    min-height: 0;
+  }
+}
+
+
+@media (max-width: 600px) {
+  .mi-experiencia-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0.7rem !important;
+    max-width: 99vw !important;
+    padding: 0 1vw;
+  }
+  .experience-card {
+    max-width: 99vw !important;
+    min-width: 0;
+    min-height: 440px;
+    height: 440px; /* Mucho más alto en móvil pequeño */
+    border-radius: 10px !important;
+    margin: 0 auto 1rem auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow-x: hidden;
+  }
+  .experience-image {
+    height: 140px !important;
+    min-height: 140px !important;
+    max-height: 140px !important;
+    border-radius: 10px 10px 0 0 !important;
+  }
+  .experience-image img {
+    border-radius: 10px 10px 0 0 !important;
+  }
+  .experience-content {
+    padding: 0.7rem 0.5rem !important;
+    font-size: 1rem !important;
+    flex: 1;
+    min-height: 0;
+  }
+  .experience-title {
+    font-size: 1.05rem !important;
+  }
+}
+
+/* Añade estilos para el checkbox y el botón de editar imagen en la experiencia */
+.experience-checkbox {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 2;
+  width: 22px;
+  height: 22px;
+  accent-color: #6a3de8;
+}
+
+/* Botón editar imagen (icono cámara) */
+.experience-image-edit-label {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: rgba(0,0,0,0.6);
+  border-radius: 50%;
+  padding: 8px;
+  cursor: pointer;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.2s;
+}
+.experience-image-edit-label:hover {
+  background: #6a3de8;
+  transform: scale(1.08);
+}
+
+/* Input de edición de título en modo edición */
+input.experience-title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #fff;
+  background: rgba(0,0,0,0.08);
+  border: none;
+  border-radius: 6px;
+  padding: 0.2em 0.5em;
+  margin-bottom: 0;
+  outline: none;
+  width: 100%;
+  max-width: 90%;
+}
+
+/* Dragging visual */
+.experience-card.dragging {
+  opacity: 0.7;
+  z-index: 5;
+  box-shadow: 0 12px 24px rgba(106,61,232,0.25), 0 0 0 2px #6a3de8;
+  background: #23272f;
+  position: relative;
+}
+
+/* Drag over visual */
+.experience-card.selected-card {
+  /* ya existe, pero puedes reforzar si quieres */
+  box-shadow: 0 0 0 4px #e53e3e, var(--card-shadow);
+  border: 2px solid #e53e3e;
+}
+
+/* Modal para experiencia (popup ver más) - color adaptado */
+.experience-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.experience-modal-content {
+  background: #23223a;
+  color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+  max-width: 600px;
+  width: 95%;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 36px;
+  position: relative;
+  border: 2px solid #6a3de8;
+}
+
+.experience-modal-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 18px;
+  background: #6a3de8;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.experience-modal-content h2 {
+  margin-top: 0;
+  color: #fff;
+}
+
+.experience-modal-content .modal-body {
+  white-space: pre-line;
+  color: #e0e0e0;
+}
+
+/* Mejora visual del texto de las tarjetas de experiencia */
+.experience-description-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 18;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 0;
+  word-break: break-word;
+  position: relative;
+  padding-bottom: 3.2rem;
+  color: #f5f5fa;
+  font-size: 1.18rem;
+  line-height: 1.75;
+  font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+  letter-spacing: 0.01em;
+  background: transparent;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.13);
+  /* Añade separación entre párrafos */
+}
+
+.experience-description-clamp p {
+  margin: 0 0 1.1em 0;
+  font-size: 1.18rem;
+  line-height: 1.75;
+}
+
+.experience-description-clamp strong,
+.experience-description-clamp b {
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.experience-description-clamp h4,
+.experience-description-clamp h3 {
+  color: #b6aaff;
+  font-size: 1.15em;
+  font-weight: 700;
+  margin: 1.1em 0 0.5em 0;
+  letter-spacing: 0.01em;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  border-left: 3px solid #6a3de8;
+  padding-left: 0.7em;
+}
+
+.experience-description-clamp ul,
+.experience-description-clamp ol {
+  margin: 0.7em 0 1.1em 1.5em;
+  padding-left: 1.2em;
+}
+
+.experience-description-clamp li {
+  margin-bottom: 0.5em;
+  font-size: 1.08rem;
+}
+
+.experience-description-clamp .subtitle {
+  display: block;
+  color: #a7a7d9;
+  font-size: 1.07em;
+  font-weight: 600;
+  margin: 0.7em 0 0.3em 0;
+  letter-spacing: 0.01em;
+}
+
+/* Mejora el aspecto de los títulos en las tarjetas */
+.experience-title {
+  font-size: 2rem;
+  color: #fff;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.01em;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+/* Mejora el aspecto del header de la tarjeta */
+.experience-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.2rem;
+  gap: 0.7rem;
+}
+
+/* Mejora el botón "Ver más" */
+.experience-see-more-btn {
+  background: linear-gradient(90deg, #6a3de8 60%, #4b28c7 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 22px;
+  font-size: 1.08rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(106,61,232,0.12);
+  margin-top: 0.5rem;
+  transition: background 0.2s, transform 0.15s;
+  letter-spacing: 0.02em;
+}
+.experience-see-more-btn:hover,
+.experience-see-more-btn:focus {
+  background: linear-gradient(90deg, #4b28c7 60%, #6a3de8 100%);
+  transform: translateY(-2px) scale(1.04);
+}
+
+/* h3 para bloques que terminan en : */
+.experience-block-h3 {
+  color: #b6aaff;
+  font-size: 1.25em;
+  font-weight: 700;
+  margin: 1.1em 0 0.5em 0;
+  letter-spacing: 0.01em;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  border-left: 3px solid #6a3de8;
+  padding-left: 0.7em;
+  background: transparent;
+}
+
+/* ¿Qué hice? destacado */
+.experience-block-quehice {
+  display: block;
+  color: #ffb347;
+  font-weight: 700;
+  font-size: 1.13em;
+  margin: 1em 0 0.7em 0;
+  letter-spacing: 0.01em;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  background: transparent;
+}

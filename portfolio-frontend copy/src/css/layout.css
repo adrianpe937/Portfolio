@@ -1,0 +1,152 @@
+:root {
+  /* Colores principales */
+  --bg-color: #f8f9fa;
+  --text-color: #333333;
+  --primary-color: #6a3de8;
+  --primary-color-light: #8c68f0;
+  --secondary-color: #38b2ac;
+  --accent-color: #f8d57e;
+
+  /* Colores de elementos UI */
+  --card-bg: #ffffff;
+  --card-border: rgba(106, 61, 232, 0.1);
+  --card-shadow: 0 10px 30px rgba(106, 61, 232, 0.1);
+  --card-shadow-hover: 0 15px 40px rgba(106, 61, 232, 0.15);
+
+  /* Botones */
+  --button-bg: #6a3de8;
+  --button-hover: #5429d0;
+  --danger-color: #e53e3e;
+  --danger-color-dark: #c53030;
+
+  /* Texto */
+  --light-text-color: #666666;
+
+  /* Animaciones */
+  --animation-duration: 0.8s;
+  --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Espaciado */
+  --section-spacing: 5rem;
+  --element-spacing: 2rem;
+
+  /* Bordes */
+  --border-radius-sm: 8px;
+  --border-radius-md: 16px;
+  --border-radius-lg: 24px;
+  --border-radius-xl: 32px;
+
+  /* Gradientes */
+  --primary-gradient: linear-gradient(135deg, var(--primary-color), var(--primary-color-light));
+  --text-gradient: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  --accent-gradient: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+}
+
+/* Globales, body, .portfolio-container, etc. */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3 {
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  font-size: 3rem;
+  color: var(--primary-color);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+h2 {
+  font-size: 2rem;
+  color: var(--secondary-color);
+  margin-bottom: 1rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+  color: var(--primary-color-light);
+  margin-bottom: 0.5rem;
+}
+
+p {
+  font-size: 1rem;
+  color: var(--text-color);
+  margin-bottom: 1rem;
+}
+
+strong {
+  color: var(--primary-color);
+}
+
+.portfolio-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+ul li {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  color: var(--text-color);
+}
+
+button {
+  background-color: var(--button-bg);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--button-hover);
+  transform: translateY(-3px);
+}
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(106, 61, 232, 0.05);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 6px;
+  border: 3px solid rgba(106, 61, 232, 0.05);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-color-light);
+}
+
+/* Responsive global */
+@media (max-width: 768px) {
+  .portfolio-container {
+    padding: 1rem;
+  }
+}
+
+/* Añade aquí solo estilos globales, body, contenedores, listas, botones, scrollbar, media queries globales */
+/* Elimina cualquier cosa de hero, header, features, experience, projects, contact, utils */

@@ -18,10 +18,7 @@ const ContactSection = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.message || "Error al enviar el mensaje");
-      }
+      if (!res.ok) throw new Error("Error al enviar el mensaje");
       setForm({ nombre: "", email: "", mensaje: "" });
       Swal.fire({
         icon: "success",
@@ -29,11 +26,11 @@ const ContactSection = () => {
         text: "Gracias por contactarme.",
         confirmButtonColor: "#3085d6"
       });
-    } catch (error) {
+    } catch {
       Swal.fire({
         icon: "error",
         title: "Error",
-        text: error.message || "No se pudo enviar el mensaje. Inténtalo de nuevo más tarde.",
+        text: "No se pudo enviar el mensaje. Inténtalo de nuevo más tarde.",
         confirmButtonColor: "#d33"
       });
     }

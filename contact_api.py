@@ -15,14 +15,15 @@ CORS(app)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = os.environ.get('GMAIL_USER')  # Tu correo Gmail
-app.config['MAIL_PASSWORD'] = os.environ.get('GMAIL_APP_PASSWORD')  # Contraseña de aplicación
+app.config['MAIL_USERNAME'] = os.environ.get('GMAIL_USER')
+app.config['MAIL_PASSWORD'] = os.environ.get('GMAIL_APP_PASSWORD')
 app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('GMAIL_USER')
 
-print("GMAIL_USER:", os.environ.get('GMAIL_USER'))  # <-- Añade esto para depuración
+print("GMAIL_USER:", os.environ.get('GMAIL_USER'))
 
 mail = Mail(app)
 
+#Recibe los datos del formulario y lo envía usando Flask-Mail.
 @app.route('/api/contacto', methods=['POST'])
 def contacto():
     data = request.get_json()
